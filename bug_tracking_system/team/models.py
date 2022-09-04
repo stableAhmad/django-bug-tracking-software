@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
+class team(models.Model):
+    teamleader = models.CharField(null=False, blank=False, max_length=40)
+    #teammembers = []
