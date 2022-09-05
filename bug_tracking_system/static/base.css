@@ -1,4 +1,49 @@
-button
+*
 {
-	background-color: green;
+	margin: 0;
+	padding: 0;
+}
+
+
+
+/*css starts here*/
+
+
+
+
+*
+{
+	margin: 0;
+	padding: 0;
+	font-family: 'Merriweather Sans', sans-serif;
+	font-family: 'Montserrat', sans-serif;
+}
+
+
+a
+{
+	cursor: pointer;
+}
+
+#nav_bar
+{
+	width: 15%;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	
+}
+.nav_section
+{
+	
+	display: flex;
+	width: 40%;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+i
+{
+	padding-right: 5px;
 }

@@ -1,15 +1,35 @@
 <html>
 <head>
 	{% load static %}
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Qwitcher+Grypen:wght@700&display=swap" rel="stylesheet"> 
+
+	<link rel="stylesheet" href="{% static 'Fontawesome/css/all.min.css' %}">
 	<link rel="stylesheet" href="{% static 'base.css' %}">
 </head>
 <body>
 	<div id="nav_bar">
-		<h1 id="current_page_title">dummy</h1>
-		<a id="go_projects">projects</a>
-		<a id="go_reports">reports</a>
-		<a id="go_profile">profile</a>
-		<button id ="log_out">Log out</button>
+
+		<div class="nav_section" >
+			<i class="fa-solid fa-layer-group"></i>
+			<a id="go_projects">Projects</a>
+		</div>
+
+		<div class="nav_section" >
+			<i class="fa-solid fa-bug"></i>
+			<a id="go_reports">Reports</a>
+		</div>
+
+		<div class="nav_section" >
+			<i class="fa-solid fa-user"></i>
+			<a id="go_profile">Profile</a>
+		</div>
+
+		<div  class="nav_section" >
+			<i class="fa-solid fa-right-from-bracket"></i>
+			<a id ="log_out">Log out</a>
+		</div>
 	</div>
 </body>
 </html>
