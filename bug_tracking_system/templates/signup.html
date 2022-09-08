@@ -14,19 +14,19 @@
 	</style>
 </head>
 <body>
-	<div id="container">
-		
+	<form id="container" method="POST">
+		{% csrf_token %}
 		<input type="text" name="first_name" placeholder="First name">
-		<input type="text" name="second_name" placeholder="Seocnd name">
+		<input type="text" name="last_name" placeholder="Last name">
 		<input type="email" name="mail" placeholder="E-mail">
 		<input type="password" name="pass" placeholder="Password">
 		<select>
-			<option>Admin</option>
+			<option selected>Admin</option>
 			<option>Developer</option>
 		</select>
 
-
-	</div>
-	<input type="button" value="Sign up" submit="submit">
+		<input type="submit" name="try"  value="Sign up" >
+	</form>
+	
 </body>
 </html>
