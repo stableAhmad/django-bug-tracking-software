@@ -7,7 +7,7 @@ def signed_up(request):
 
 	if(request.POST.get("try")):
 		DIC = request.POST
-		if(DIC.get("first_name") != '' and DIC.get("last_name") != '' and DIC.get("pass") != '' and DIC.get("mail")!= '' and DIC.get("team_leader")!= ''):
+		if(DIC.get("first_name") != '' and DIC.get("last_name") != '' and DIC.get("pass") != '' and DIC.get("mail")!= ''  and DIC.get("team_leader_mail")!= '' ):
 			mail = DIC["mail"]
 			col = user.objects.all()
 			unique = True
@@ -17,11 +17,11 @@ def signed_up(request):
 					unique = False
 					break
 			if(unique):
-				newUser = user(firstname =  DIC["first_name"]  ,lastname =  DIC["last_name"] , mail = DIC["mail"] , password =  DIC["pass"]  , teamleader = DIC["team_leader"] , bugsreported =  0 ,bugsclosed =0 )
+				newUser = user(firstname =  DIC["first_name"]  ,lastname =  DIC["last_name"] , mail = DIC["mail"] , password =  DIC["pass"]  , teamleadermail = DIC["team_leader_mail"] , bugsreported =  0 ,bugsclosed =0 )
 				newUser.save()
 				messDic["message"]="You can sign in now"
 
-				leader = newUser.teamleader
+				leader = newUser.teamleadermail
 				#start here
 
 						
