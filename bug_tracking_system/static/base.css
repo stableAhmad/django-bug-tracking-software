@@ -1,0 +1,44 @@
+
+
+
+*
+{
+	margin: 0;
+	padding: 0;
+	font-family: 'Merriweather Sans', sans-serif;
+	font-family: 'Montserrat', sans-serif;
+	color: black;
+}
+
+
+a
+{
+	cursor: pointer;
+	 text-decoration: none;
+
+}
+
+
+#nav_bar
+{
+	width: 15%;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	
+}
+.nav_section
+{
+	
+	display: flex;
+	width: 40%;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+i
+{
+	padding-right: 5px;
+}
+
