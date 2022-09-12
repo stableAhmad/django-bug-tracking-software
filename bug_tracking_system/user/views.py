@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .models import user
 
 def signed_up(request):
-	messDic = {"message" : ""}
+	messDic = {"message" : "" , "signed":False}
 
 	if(request.POST.get("try")):
 		DIC = request.POST
@@ -14,11 +14,13 @@ def signed_up(request):
 			for x in col :
 				if(mail == x.mail):
 					messDic["message"]= "E-mail is already used"
+
 					unique = False
 					break
 			if(unique):
 				newUser = user(firstname =  DIC["first_name"]  ,lastname =  DIC["last_name"] , mail = DIC["mail"] , password =  DIC["pass"]  , teamleadermail = DIC["team_leader_mail"] , bugsreported =  0 ,bugsclosed =0 )
 				newUser.save()
+				messDic["signed"] = True
 				messDic["message"]="You can sign in now"
 
 				leader = newUser.teamleadermail
@@ -37,6 +39,7 @@ def signed_up(request):
 			#if not we create new team in team db with that team leader
 			#then we add its that user as its first memebr
 		else:
+			messDic["message"]="Please sign up with a valid input"
 			print("no valid input")
 	
 	return render(request, "signup.html" ,messDic)

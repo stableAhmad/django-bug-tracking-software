@@ -4,7 +4,7 @@
 			padding: 0;
 			font-family: 'Merriweather Sans', sans-serif;
 			font-family: 'Montserrat', sans-serif;
-			color: black;
+			
 		}	
 		body
 		{
@@ -32,4 +32,16 @@
 		{
 			padding: 10px;
 			margin-top: 10px;
+		}
+		#message
+		{
+			font-size: 21px;
+		}
+		.success
+		{
+			color: green;
+		}
+		.failiure
+		{
+			color: red;
 		}
