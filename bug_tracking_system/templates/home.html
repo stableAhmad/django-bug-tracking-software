@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css_files %}
+	<link rel="stylesheet" href="{% static 'Fontawesome/css/all.min.css' %}">
+	<link rel="stylesheet" href="{% static 'base.css' %}">
+	<link rel="stylesheet" href="{% static 'home.css' %}">
+{% endblock %}
+
+{% block content %}
+	<div>
+		<div id="layer_one">
+			<h1>Projects</h1>
+			<div><input id="projects_search_bar" type="text" name="seach_name" placeholder="Search by name"></div>
+		</div>
+
+		<select id="sort_select">
+			<option>Sort</option>
+			<option >Name</option>
+			<option>Date added</option>
+			<option>Bugs</option>
+		</select>
+
+	</div>
+	<div id="header">
+			<div class="column column-h"  id="project_name">Project name</div>
+			<div class="column column-h" id="project_bugs">Bugs</div>
+			<div class="column column-h" id="project_date">Date</div>
+		</div>
+	<div id="results">
+		
+		{% for project in projects %}
+		<div id="project_table"> 
+			<div class="column"  id="project_name">{{ project.name }}</div>
+			<div class="column" id="project_bugs">{{ project.bugs_count }}</div>
+			<div class="column" id="project_date">{{ project.date_added }}</div>
+		</div>
+		{% endfor %}
+		{% if not projects %}
+		 <div>no results found</div>
+		{% endif %}
+	</div>
+
+{% endblock %}

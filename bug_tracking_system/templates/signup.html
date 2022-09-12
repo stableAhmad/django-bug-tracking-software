@@ -25,7 +25,8 @@
 
 		<input type="submit" name="try"  value="Sign up" >
 	</form>
-	<p id="message"> {{ message }} </p>
+	<p id="message" class="{% if signed %}success{% else %}failiure{% endif %}"> {{ message }} </p>
+	
 	
 </body>
 </html>
