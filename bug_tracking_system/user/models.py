@@ -8,6 +8,6 @@ class user(models.Model):
     lastname = models.CharField(null=False, blank=False, max_length=20)
     mail = models.EmailField(null=False,blank=False)
     password = models.CharField(null=False, blank=False , max_length=20)
-    teamleadermail = models.ForeignKey(team , null=True,on_delete = models.SET_NULL)
+    team = models.ForeignKey(team , blank = True, null=True,on_delete = models.SET_NULL)
     bugsreported = models.IntegerField()
     bugsclosed = models.IntegerField()
