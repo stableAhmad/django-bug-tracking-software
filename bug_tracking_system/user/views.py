@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import user
-from ..team.models import team
+from team.models import team
 
 
 def signed_up(request):
@@ -22,26 +22,27 @@ def signed_up(request):
                     break
             if unique:
                 newUser = user(firstname=DIC["first_name"], lastname=DIC["last_name"], mail=DIC["mail"],
-                               password=DIC["pass"], teamleadermail=DIC["team_leader_mail"], bugsreported=0,
+                               password=DIC["pass"], teamleadermail=null, bugsreported=0,
                                bugsclosed=0)
                 newUser.save()
                 messDic["signed"] = True
                 messDic["message"] = "You can sign in now"
 
-                leader = newUser.teamleadermail
+                leader = DIC["team_leader_mail"]
+                
                 # start here
-                foundTL = False
-                teamdb = team.objects.all()
+                #foundTL = False
+                #teamdb = team.objects.all()
 
-                for it in teamdb:
-                    if leader == it.teamleader:
-                        it.teammembers.append(mail)
-                        foundTL = True
+                #for it in teamdb:
+                    #if leader == it.teamleader:
+                        #it.teammembers.append(mail)
+                        #foundTL = True
 
-                if not foundTL:
-                    newTL = team(teamleader=DIC["team_leader_mail"])
-                    newTL.teammembers.append(DIC["mail"])
-                    newTL.save()
+                #if not foundTL:
+                    #newTL = team(teamleadermail=DIC["team_leader_mail"])
+                    #newTL.teammembers.append(DIC["mail"])
+                   #newTL.save()
 
         # search about mail
         # tasks
