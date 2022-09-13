@@ -44,8 +44,9 @@ def signed_up(request):
 
 
 def sign_in(request):
+    message = {"message": "", "signed": False}
     if(request.POST.get("sign_me_in")):
-        message = {"message": "", "signed": False}
+        
         FORM = request.POST
         q = user.objects.filter(mail = FORM["mail"])
         if(q):
