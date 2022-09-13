@@ -7,7 +7,7 @@ from team.models import team
 def signed_up(request):
     messDic = {"message": "", "signed": False}
 
-    if request.POST.get("try"):
+    if request.POST.get("sign_me_up"):
         DIC = request.POST
         if (DIC.get("first_name") != '' and DIC.get("last_name") != '' and DIC.get("pass") != '' and DIC.get(
                 "mail") != '' and DIC.get("team_leader_mail") != ''):
@@ -43,5 +43,21 @@ def signed_up(request):
     return render(request, "signup.html", messDic)
 
 
-def profile(request):
-    return render(request, "profile.html")
+def sign_in(request):
+    if(request.POST.get("sign_me_in")):
+        message = {"message": "", "signed": False}
+        FORM = request.POST
+        q = user.objects.filter(mail = FORM["mail"])
+        if(q):
+            if(FORM["pass"] == q[0].password):
+                print("success")
+                message["signed"] = True
+            else:
+                 message["signed"] = False
+                 message["message"] = "The password you have entered is not correct"
+
+        else :
+            message["signed"] = False
+            message["message"] = "The E-mail you have entered is not correct"
+    return render(request , "signin.html",  message )
+

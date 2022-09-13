@@ -15,8 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import    sign_in
-from user.views import signed_up , profile
+from user.views import signed_up , sign_in
 from project.views import home
 
 urlpatterns = [
@@ -24,5 +23,5 @@ urlpatterns = [
     path('home',home),
     path('',sign_in),
     path('signup',signed_up),
-    path('profile',profile)
+    
 ]

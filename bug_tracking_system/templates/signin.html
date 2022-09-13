@@ -12,15 +12,17 @@
 	
 </head>
 <body>
-	<div id="container">
-		
+	<form id="container" method="POST">
+		{% csrf_token %}
 		
 		<input type="email" name="mail" placeholder="E-mail">
 		<input type="password" name="pass" placeholder="Password">
-		
+		<input type="submit" name = "sign_me_in" value="Sign in">	
 
 
-	</div>
-	<input type="button" value="Sign in" submit="submit">
+	</form>
+	<p id="message" class="{% if signed %}success{% else %}failiure{% endif %}"> {{ message }} </p>
+	
+	
 </body>
 </html>
