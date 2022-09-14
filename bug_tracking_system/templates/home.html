@@ -24,18 +24,24 @@
 
 	</div>
 	<div id="header">
-			<div class="column column-h"  id="project_name">Project name</div>
-			<div class="column column-h" id="project_bugs">Bugs</div>
-			<div class="column column-h" id="project_date">Date</div>
+			<div class="column column-h"  >Project name</div>
+			<div class="column column-h" >Bugs</div>
+			<div class="column column-h" >Date</div>
 		</div>
 	<div id="results">
 		
 		{% for project in projects %}
-		<div id="project_table"> 
-			<div class="column"  id="project_name">{{ project.name }}</div>
-			<div class="column" id="project_bugs">{{ project.bugs_count }}</div>
-			<div class="column" id="project_date">{{ project.date_added }}</div>
+		<div class="project_table"> 
+			<div class="column project_name"> {{ project.name }}</div>
+			<div class="column project_bugs">{{ project.bugs_count }}</div>
+			<div class="column project_date">{{ project.date_added }}</div>
+
 		</div>
+		<input id="{{ project.id }}" class="Description" type="button" name="description" value="Description" >
+		<div class="des_content" id="{{ project.id }}c">
+			{{ project.description }}
+		</div>
+		<hr>
 		{% endfor %}
 		{% if not projects %}
 		 <div>no results found</div>

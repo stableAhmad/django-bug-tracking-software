@@ -4,10 +4,10 @@ from .models import project
 def home(request):
 	
 	projects = project.objects.all();
-	messDic = {"projects":projects , "test":[]}
+	context = {"projects":projects , "test":[]}
 
 	
 
 
 
-	return render(request , "home.html" , messDic)
+	return render(request , "home.html" , context)
