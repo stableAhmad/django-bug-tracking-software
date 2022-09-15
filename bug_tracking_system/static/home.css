@@ -74,6 +74,9 @@
 	border: solid 1px black;
 	padding: 5px;
 	width: 50%;
+
+
+	display: none;
 }
 .description
 {

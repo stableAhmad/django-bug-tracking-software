@@ -54,7 +54,6 @@ def sign_in(request):
             q = user.objects.filter(mail = FORM["mail"])
             if(q):
                 if(FORM["pass"] == q[0].password):
-                    print("success")
                     message["signed"] = True
                     response =redirect('/home')
                     return response
