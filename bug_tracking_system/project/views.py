@@ -5,7 +5,7 @@ def home(request):
 	
 	projects = project.objects.all();
 	if(request.method == 'GET'):
-		pass
+		print("none")
 	
 	
 
