@@ -15,12 +15,16 @@
 			<div><input id="projects_search_bar" type="text" name="seach_name" placeholder="Search by name"></div>
 		</div>
 
-		<select id="sort_select">
-			<option>Sort</option>
-			<option >Name</option>
-			<option>Date added</option>
-			<option>Bugs</option>
-		</select>
+		<div>
+			<label for="sort">Sorted by<label>
+			<select name="sort" id="sort_select">
+			<option value="default"></option>
+			<option value="alpha">Name</option>
+			<option value="date">Date added</option>
+			<option value="bugs_number">Bugs</option>
+			</select>	
+		</div>
+		
 
 	</div>
 	<div id="header">
@@ -47,5 +51,28 @@
 		 <div>no results found</div>
 		{% endif %}
 	</div>
-	<script src="{% static 'home-js.js' %}"></script>
+	<script src="{% static 'jquery.js' %}"></script>
+	<script src="{% static 'home-js.js' %}">
+
+
+	</script>
+	<script>
+		
+		let select =$("#sort_select")
+		select.change(function ()
+			{
+				
+				$.ajax(
+				{
+					url: "{% url 'home' %}",
+					type:'GET',
+					dataType:"json",
+					headers: {"test": "123"},
+					success:function(data)
+					{
+					console.log(data)
+					}
+				})
+			})
+	</script>
 {% endblock %}

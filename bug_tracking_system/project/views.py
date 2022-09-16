@@ -4,6 +4,12 @@ from .models import project
 def home(request):
 	
 	projects = project.objects.all();
+	if(request.method == 'GET'):
+		pass
+	
+	
+
+	
 	context = {"projects":projects , "test":[]}
 
 	
