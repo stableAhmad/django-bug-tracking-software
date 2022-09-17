@@ -17,18 +17,18 @@
 
 		<div>
 			<label for="sort">Sorted by<label>
-			<select name="sort" id="sort_select">
+			<select name="name" id="sort_select">
 			<option value="default"></option>
-			<option value="alpha">Name</option>
-			<option value="date">Date added</option>
-			<option value="bugs_number">Bugs</option>
+			<option value="name">Name</option>
+			<option value="date_added">Date added</option>
+			<option value="bugs_count">Bugs</option>
 			</select>	
 		</div>
 		
 
 	</div>
 	<div id="header">
-			<div class="column column-h"  >Project name</div>
+			<div class="column column-h" >Project name</div>
 			<div class="column column-h" >Bugs</div>
 			<div class="column column-h" >Date</div>
 		</div>
@@ -59,18 +59,23 @@
 	<script>
 		
 		let select =$("#sort_select")
+		
+		
 		select.change(function ()
 			{
-				
+				var method = $("#sort_select").val()
+		
 				$.ajax(
 				{
 					url: "{% url 'home' %}",
 					type:'GET',
 					dataType:"json",
-					headers: {"test": "123"},
+					headers: {"method": method , "ajax":true},
 					success:function(data)
 					{
-					console.log(data)
+						//re render here
+						replace = ``
+						console.log(JSON.parse(data))
 					}
 				})
 			})
