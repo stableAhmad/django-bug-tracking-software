@@ -47,10 +47,11 @@
 		</div>
 		<hr>
 		{% endfor %}
-		{% if not projects %}
-		 <div>no results found</div>
-		{% endif %}
+		
 	</div>
+	{% if not projects %}
+		 <div id="no_results_found">no results found</div>
+	{% endif %}
 	<script src="{% static 'jquery.js' %}"></script>
 	<script src="{% static 'home-js.js' %}">
 
@@ -69,15 +70,44 @@
 				{
 					url: "{% url 'home' %}",
 					type:'GET',
-					dataType:"json",
+					
 					headers: {"method": method , "ajax":true},
 					success:function(data)
 					{
-						//re render here
-						replace = ``
-						console.log(JSON.parse(data))
+						data = JSON.parse(data)
+						list = []
+						for(var  i = 0 ; i<data.length ; i++)
+						{
+							list[i] = JSON.parse(data[i])
+						}
+						wrapper = ``
+						counter = 1
+						list.forEach((x)=>
+						{
+							wrapper +=`
+							<div class="project_table">
+								<div class="column project_name">${x.name}</div>
+								<div class="column project_bugs">${x.bugs_count}</div>
+								<div class="column project_date">${x.date}</div>
+							</div>	
+								<input id="${counter}" class="Description" type="button" name="description" value="Description">
+									<div class="des_content" id="${counter}c">
+										${x.description}
+									</div>
+								<hr>
+							`
+							counter++
+						})
+						document.getElementById("results").innerHTML =wrapper
+						if(list.length == 0)
+						{
+							document.getElementById("no_results_found").innerHTML = "no result found"
+						}
+						expand_descrption()
+
 					}
 				})
 			})
+
 	</script>
 {% endblock %}

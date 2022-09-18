@@ -1,4 +1,11 @@
-var Des_button_col = document.getElementsByClassName("Description")
+function test(str)
+{
+	console.log(str)
+}
+
+function expand_descrption()
+{
+	var Des_button_col = document.getElementsByClassName("Description")
 var Des_content_col = document.getElementsByClassName("des_content")
 
 function handler (col , i)
@@ -28,6 +35,8 @@ for(var i = 0 ; i<Des_button_col.length ; i++)
 	})
 }
 
+}
 
 
 
+expand_descrption()

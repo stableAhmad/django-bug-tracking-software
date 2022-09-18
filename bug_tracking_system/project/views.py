@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.core import serializers
+import json
 from django.shortcuts import render
 from .models import project
 # Create your views here.
@@ -11,27 +11,22 @@ def home(request):
 		method = request.headers.get("method")
 		
 		projects = projects.order_by(method)
+		values =  [ p.to_json() for p in projects ]
+		list_of_json = []
+		for value in values :
+			list_of_json.append(json.dumps(value))
 		
-		data = make_serializable(projects)
-		final = JsonResponse(data , safe=False)
-		print(data)
-		return "not yet"
+		list_of_json = json.dumps(list_of_json)	
+		
+
 	
+		
+		return JsonResponse(list_of_json , safe = False)
+	
+
 
 	
 	context = {"projects":projects}
 
 	return render(request , "home.html" , context)
 
-def make_serializable(Qset):
-	list = []
-	
-	for item in Qset:
-		obj_list = []
-		obj_list.append("1")
-		obj_list.append("2")
-		obj_list.append("3")
-		obj_list.append("4")
-		list.append(obj_list)
-		
-	return list	

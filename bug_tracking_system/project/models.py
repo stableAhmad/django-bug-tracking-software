@@ -8,3 +8,11 @@ class project(models.Model):
 	date_added = models.DateField()
 	bugs_count = models.IntegerField()
 
+	def to_json(self):
+		return {
+		'name':self.name,
+		'description':self.description,
+		'date':str(self.date_added),
+		"bugs_count":self.bugs_count
+		}
+
