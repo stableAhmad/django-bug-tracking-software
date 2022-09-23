@@ -5,7 +5,8 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Qwitcher+Grypen:wght@700&display=swap" rel="stylesheet"> 
 
-	<link rel="stylesheet" href="{% static 'Fontawesome/css/all.min.css' %}">
+	
+	<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'sign.css' %}">
 	
 
@@ -14,19 +15,30 @@
 	</style>
 </head>
 <body>
-	<form id="container" method="POST">
-		{% csrf_token %}
-		<input type="text"  name="first_name" placeholder="First name">
-		<input type="text" name="last_name" placeholder="Last name">
-		<input type="email" name="mail" placeholder="E-mail">
-		<input type="password" name="pass" placeholder="Password">
-		
-		<input type="email" name="team_leader_mail" placeholder="Team leader mail" required>
+	<div id="form_container">
+		<h1 id="title">Create an account</h1>
+		<form class="mt-5" method="POST">
+			{% csrf_token %}
+			<div id="container">
+				{% for field in form %}
+				<div class="form-group">
+					{{ field.label }}
+					{{ field }}
+				</div>
 
-		<input type="submit" name="sign_me_up"  value="Sign up" >
-	</form>
-	<p id="message" class="{% if signed %}success{% else %}failiure{% endif %}"> {{ message }} </p>
+				{% endfor %}
+			</div>
+			<button type="submit" >Submit</button>
+			{% for m in error_list %}
+			 <p class="error" >{{ m }}</p>
+			{% endfor %}
+			<p>Already have an account ? , log in <a href = "/" >here</a></p>
+		</form>
+	</div>
+
 	
-	
+
+	<script src="{% static 'bootstrap.bundle.min.js' %}"> </script>	
 </body>
+
 </html>

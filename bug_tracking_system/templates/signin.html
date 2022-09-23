@@ -6,23 +6,38 @@
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Qwitcher+Grypen:wght@700&display=swap" rel="stylesheet"> 
 
 	<link rel="stylesheet" href="{% static 'Fontawesome/css/all.min.css' %}">
+	<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'sign.css' %}">
 	
 
 	
 </head>
 <body>
-	<form id="container" method="POST">
-		{% csrf_token %}
-		
-		<input type="email" name="mail" placeholder="E-mail">
-		<input type="password" name="pass" placeholder="Password">
-		<input type="submit" name = "sign_me_in" value="Sign in">	
+	<div id="form_container">
+		<h1 id="title">Log in</h1>
+		<form class="mt-5" method="POST">
+			{% csrf_token %}
+			<div id="container">
+				
+				<div class="form-group">
+					<label>Username</label>
+					<input class="form-control" type="text" name="username" >
 
+				</div>
 
-	</form>
-	<p id="message" class="{% if signed %}success{% else %}failiure{% endif %}"> {{ message }} </p>
-	<a href="/signup" >Create an account</a>
+				<div class="form-group">
+
+					<label>Password</label>
+					<input type="password" class="form-control" name="password" >
+					
+				</div>	
+				
+			</div>
+			<button type="submit" >Log in</button>
+			<p class="error">{{ message }}</p>
+			<p>Create an account <a href = "/signup" >here</a></p>
+		</form>
+	</div>
 	
 	
 </body>
