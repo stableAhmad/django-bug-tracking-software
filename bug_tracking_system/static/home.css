@@ -11,10 +11,10 @@
 }
 
 
-#main
+#additional
 {
-	padding: 30px ;
-	width: 100%;
+	margin: 0 !important;
+	padding: 0 !important;
 
 }
 #layer_one
@@ -52,10 +52,7 @@
 	font-size: 24px;
 	font-weight: 400;
 }
-#results
-{
-	
-}
+
 #header
 {
 	display: flex;
@@ -64,6 +61,12 @@
 	
 }
 
+tr
+{
+	
+
+	align-items: center;
+}
 .project_table
 {
 	font-size: 19px;
@@ -71,12 +74,9 @@
 }
 .des_content
 {
-	border: solid 1px black;
 	padding: 5px;
-	width: 50%;
-
-
 	display: none;
+	width: inherit !important;
 }
 .description
 {
@@ -87,4 +87,22 @@
 {
 	font-weight: 600;
 	font-size: 23px;
+}
+
+#home_body
+{
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+
+}
+
+#filters
+{
+	padding: 1%;
+	border-right: solid grey 1px;
+}
+#results
+{
+	width: 66.6%;
 }

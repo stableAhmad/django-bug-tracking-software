@@ -3,111 +3,129 @@
 {% load static %}
 
 {% block css_files %}
-	<link rel="stylesheet" href="{% static 'Fontawesome/css/all.min.css' %}">
-	<link rel="stylesheet" href="{% static 'base.css' %}">
-	<link rel="stylesheet" href="{% static 'home.css' %}">
+
+
+<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'base.css' %}">
+
+
+<link rel="stylesheet" href="{% static 'home.css' %}">
 {% endblock %}
 
 {% block content %}
-	<div>
-		<div id="layer_one">
-			<h1>Projects</h1>
-			<div><input id="projects_search_bar" type="text" name="seach_name" placeholder="Search by name"></div>
-		</div>
 
+<div class="container" id="home_body">
+	<div  id="filters">
 		<div>
-			<label for="sort">Sorted by<label>
-			<select name="name" id="sort_select">
-			<option value="default"></option>
-			<option value="name">Name</option>
-			<option value="date_added">Date added</option>
-			<option value="bugs_count">Bugs</option>
-			</select>	
+			<div>
+				<select class="form-select" aria-label="Default select example">
+					<option selected>Sort by</option>
+					<option value="name">Name</option>
+					<option value="bugs_count">Bugs</option>
+					<option value="date_added">Date added</option>
+				</select>
+			</div>
 		</div>
-		
+		<div class="mt-3">
+			<div class="mb-3">
 
-	</div>
-	<div id="header">
-			<div class="column column-h" >Project name</div>
-			<div class="column column-h" >Bugs</div>
-			<div class="column column-h" >Date</div>
+				<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Search" aria-describedby="emailHelp">
+				
+			</div>
+
 		</div>
+	</div>
 	<div id="results">
-		
-		{% for project in projects %}
-		<div class="project_table"> 
-			<div class="column project_name"> {{ project.name }}</div>
-			<div class="column project_bugs">{{ project.bugs_count }}</div>
-			<div class="column project_date">{{ project.date_added }}</div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Title</th>
+					<th scope="col">Bugs</th>
+					<th scope="col">Date</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for project in projects %}
 
-		</div>
-		<input id="{{ project.id }}" class="Description" type="button" name="description" value="Description" >
-		<div class="des_content" id="{{ project.id }}c">
-			{{ project.description }}
-		</div>
-		<hr>
-		{% endfor %}
-		
+				<tr>
+					<th scope="row"> {{ forloop.counter }}</th>
+					<td>{{ project.name }}</td>
+					<td>{{ project.bugs_count }}</td>
+					<td>{{ project.date_added }}</td>
+				</tr>
+
+				{% endfor %}
+
+			</tbody>
+		</table>	
+
+		{% if not projects %}
+		<div id="no_results_found">no results found</div>
+		{% endif %}
 	</div>
-	{% if not projects %}
-		 <div id="no_results_found">no results found</div>
-	{% endif %}
-	<script src="{% static 'jquery.js' %}"></script>
-	<script src="{% static 'home-js.js' %}">
+</div>
 
 
-	</script>
-	<script>
+
+<script src="{% static 'JS/jquery.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
+<script src="{% static 'JS/home-js.js' %}">
+
+
+</script>
+<script>
+
+	let select =$("#sort_select")
+
+
+	select.change(function ()
+	{
+		var method = $("#sort_select").val()
 		
-		let select =$("#sort_select")
-		
-		
-		select.change(function ()
+		$.ajax(
+		{
+			url: "{% url 'home' %}",
+			type:'GET',
+
+			headers: {"method": method , "ajax":true},
+			success:function(data)
 			{
-				var method = $("#sort_select").val()
-		
-				$.ajax(
+				data = JSON.parse(data)
+				list = []
+				for(var  i = 0 ; i<data.length ; i++)
 				{
-					url: "{% url 'home' %}",
-					type:'GET',
-					
-					headers: {"method": method , "ajax":true},
-					success:function(data)
-					{
-						data = JSON.parse(data)
-						list = []
-						for(var  i = 0 ; i<data.length ; i++)
-						{
-							list[i] = JSON.parse(data[i])
-						}
-						wrapper = ``
-						counter = 1
-						list.forEach((x)=>
-						{
-							wrapper +=`
-							<div class="project_table">
-								<div class="column project_name">${x.name}</div>
-								<div class="column project_bugs">${x.bugs_count}</div>
-								<div class="column project_date">${x.date}</div>
-							</div>	
-								<input id="${counter}" class="Description" type="button" name="description" value="Description">
-									<div class="des_content" id="${counter}c">
-										${x.description}
-									</div>
-								<hr>
-							`
-							counter++
-						})
-						document.getElementById("results").innerHTML =wrapper
-						if(list.length == 0)
-						{
-							document.getElementById("no_results_found").innerHTML = "no result found"
-						}
-						expand_descrption()
-
-					}
+					list[i] = JSON.parse(data[i])
+				}
+				wrapper = ``
+				counter = 1
+				list.forEach((x)=>
+				{
+					wrapper +=`
+					<div class="project_table">
+					<div class="column project_name">${x.name}</div>
+					<div class="column project_bugs">${x.bugs_count}</div>
+					<div class="column project_date">${x.date}</div>
+					</div>	
+					<input id="${counter}" class="Description" type="button" name="description" value="Description">
+					<div class="des_content" id="${counter}c">
+					${x.description}
+					</div>
+					<hr>
+					`
+					counter++
 				})
-			})
+				document.getElementById("results").innerHTML =wrapper
+				if(list.length == 0)
+				{
+					document.getElementById("no_results_found").innerHTML = "no result found"
+				}
+				expand_descrption()
 
-	</script>
+			}
+		})
+	})
+
+</script>
 {% endblock %}

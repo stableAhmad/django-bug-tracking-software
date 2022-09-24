@@ -17,11 +17,13 @@ from django.contrib import admin
 from django.urls import path
 from user.views import signed_up , sign_in
 from project.views import home
+from .views import base
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home',home , name="home"),
     path('',sign_in),
     path('signup',signed_up),
+    path('base',base)
     
 ]

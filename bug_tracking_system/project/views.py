@@ -23,10 +23,14 @@ def home(request):
 		
 		return JsonResponse(list_of_json , safe = False)
 	
-
+	def increase():
+		 this.value = this.value +1
+		
 
 	
+	
 	context = {"projects":projects}
+
 
 	return render(request , "home.html" , context)
 

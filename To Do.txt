@@ -1,0 +1,9 @@
+bootstrap components:
+	progress
+
+
+reformat all the files
+
+replace cdn caches with static files
+
+read rl bug tracking systems' specifications

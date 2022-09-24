@@ -1,6 +1,6 @@
 from django.shortcuts import render , redirect
 from django.http import HttpResponse
-from .models import user
+
 from team.models import team
 import re
 from django.contrib.auth.decorators import login_required
