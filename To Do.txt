@@ -7,3 +7,9 @@ reformat all the files
 replace cdn caches with static files
 
 read rl bug tracking systems' specifications
+
+mod the migrations at the end
+
+
+main page:
+	increase row height on small breakpoint for responsiveness
