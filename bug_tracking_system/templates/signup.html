@@ -19,16 +19,16 @@
 		<h1 id="title">Create an account</h1>
 		<form class="mt-5" method="POST">
 			{% csrf_token %}
-			<div id="container">
+			<div class="mb-4" id="container">
 				{% for field in form %}
-				<div class="form-group">
+				<div class="form-group mb-3">
 					{{ field.label }}
 					{{ field }}
 				</div>
 
 				{% endfor %}
 			</div>
-			<button type="submit" >Submit</button>
+			<button class="mb-2" type="submit" >Submit</button>
 			{% for m in error_list %}
 			 <p class="error" >{{ m }}</p>
 			{% endfor %}

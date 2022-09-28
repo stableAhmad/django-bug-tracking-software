@@ -15,6 +15,11 @@
 	
 }
 
+.a_color
+{
+	color: #000080 !important;
+}
+
 .navbar-nav
 {
 	font-size: 130%;

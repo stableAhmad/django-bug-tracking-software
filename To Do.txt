@@ -13,3 +13,5 @@ mod the migrations at the end
 
 main page:
 	increase row height on small breakpoint for responsiveness
+
+remove unnecessary js css files

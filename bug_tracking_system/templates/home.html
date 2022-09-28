@@ -51,7 +51,7 @@
 
 				<tr>
 					<th scope="row"> {{ forloop.counter }}</th>
-					<td>{{ project.name }}</td>
+					<td><a class="a_color">{{ project.name }}</a></td>
 					<td>{{ project.bugs_count }}</td>
 					<td>{{ project.date_added }}</td>
 				</tr>
@@ -145,9 +145,9 @@
  		wrapper +=`
           <tr>
           <th scope="row"> ${ counter }</th>
-          <td >${x.name}</div>
-          <td >${x.bugs_count}</div>
-          <td >${x.date}</div>
+          <td ><a class="a_color">${x.name}</a></td>
+          <td >${x.bugs_count}</td>
+          <td >${x.date}</td>
           </tr> 
           `
           counter ++

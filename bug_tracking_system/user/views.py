@@ -56,6 +56,13 @@ def sign_in(request):
 
     return render(request , "signin.html" )
     
+
+
+
+def reidrect_logout(request):
+    logout(request)
+    return redirect('/')
+
 #when trying to access home page and you are not logged in
 #@login_required(login_url='')
 
