@@ -10,5 +10,5 @@ class bug(models.Model):
 	severity = forms.ChoiceField(choices = severity_CHOICES)
 	assigned_to  = models.CharField( max_length = 30)
 	closed = models.BooleanField()
-	#attachment file field , later
+	
 

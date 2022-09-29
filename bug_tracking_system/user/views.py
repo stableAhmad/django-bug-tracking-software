@@ -7,8 +7,13 @@ from django.contrib.auth.decorators import login_required
 from .User_forms.Signup_form import Signup_form
 from django.contrib import messages
 from django.contrib.auth import login , authenticate , logout
-
-
+from django.views.generic.edit import FormView
+from django.contrib.auth.forms import PasswordResetForm
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
 
 
 
@@ -83,8 +88,6 @@ def is_valid(form_dic):
     return True
 
 
-
- 
 
 # from django.conf import settings
 # from django.contrib.auth import REDIRECT_FIELD_NAME

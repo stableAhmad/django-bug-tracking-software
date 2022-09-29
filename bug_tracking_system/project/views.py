@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 import json
+from django.core.mail import send_mail
 from django.shortcuts import render
 from .models import project
 # Create your views here.
@@ -29,6 +30,7 @@ def home(request):
 
 	context = {"projects":projects}
 
+	
 
 	return render(request , "home.html" , context)
 
@@ -40,4 +42,12 @@ def final_json_response(data):
 		json_list = json.dumps(json_list)
 		
 		return JsonResponse(json_list , safe = False)	
+
+
+def send_verification(to_email):
+	title = "dd"
+	message = "dd"
+	res = send_mail(title,message, "djangobugtrackingsoftware@gmail.com", [to_email])
+	print(res)
+
 
