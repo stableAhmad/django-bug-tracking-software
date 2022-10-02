@@ -15,3 +15,6 @@ main page:
 	increase row height on small breakpoint for responsiveness
 
 remove unnecessary js css files
+
+
+open shell and test if password changed or not
