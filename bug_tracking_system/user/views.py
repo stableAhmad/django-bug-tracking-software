@@ -27,6 +27,7 @@ from django.conf import settings
 
 
 def password_reset_view(request):
+    message = {"message": "This email isn't registered yet."}
     if(request.method == "POST"):
         reset_form = PasswordResetForm(request.POST)
         if reset_form.is_valid():
@@ -56,7 +57,8 @@ def password_reset_view(request):
                     except BadHeaderError:
                         return HttpResponse('Invalid header found.')
                     return redirect ("/password_reset/done/")
-
+            else:
+                return render(request , 'password_reset.html' , message)
         else:
             print("failure")
     return render(request , 'password_reset.html')
