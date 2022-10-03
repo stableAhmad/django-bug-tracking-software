@@ -60,7 +60,40 @@
 
 			</tbody>
 		</table>	
+	
+			<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" id="add_project" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Add project
+</button>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New Project</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form>
+      	<div class="form-group">
+      		<label for="exampleInputEmail1">Name</label>
+      		<input type="email" class="form-control" id="new_project_name" aria-describedby="emailHelp" >
+      		
+      	</div>
+      	
+      	
+      	
+      </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="save_changes" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+	
 		{% if not projects %}
 		<div id="no_results_found">no results found</div>
 		{% endif %}
@@ -153,8 +186,57 @@
           counter ++
  	})
 
- 	return wrapper
+ 	return wrapper	
  }
+
+
+$("#add_project").click(function (){
+	send_project()
+})
+
+ function send_project()
+ {
+ 	$("#save_changes").click(function ()
+ 	{
+ 		name = $("#new_project_name").val()
+
+ 		if(name == "")
+ 		{
+ 			window.alert("Project title is required");
+ 		}else
+ 		{
+ 		const currentYear = new Date().getFullYear();
+
+const currentMonth = new Date().getMonth() + 1;
+
+const currentDay = new Date().getDate();
+let new_project = 
+{
+	'name':name,
+	'month':currentMonth,
+	'day':currentDay,
+	'year':currentYear
+}
+data =JSON.stringify(new_project)
+$.ajax(
+  	{
+  		url:"{% url 'home' %}",
+  		type:"GET",
+  		headers:{"searchWord":value , "ajax":true , "ajaxFunction":"add" },
+  		success :function (data)
+  		{
+  			 wrapper = json_to_html(data)
+  			 document.getElementById("table_body").innerHTML =wrapper
+       		  if(wrapper === "")
+        		{	
+         		 document.getElementById("table_body").innerHTML = "no result found"
+        		}
+  		}
+  	})
+}
+ 	})
+ }
+
 </script>
 
 {% endblock %}
