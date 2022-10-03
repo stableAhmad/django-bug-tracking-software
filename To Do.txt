@@ -18,3 +18,21 @@ remove unnecessary js css files
 
 
 open shell and test if password changed or not
+
+
+1-interface
+ :
+	-signup html :
+		background : white or gray 
+		form : ??
+
+	-check if password has been changed 
+
+
+
+2-REMEMBER ME
+
+3- ROLES
+
+4-PROJECTS
+		-EACH PROJECT SHOULD HAVE A TEAM MEMEBRS AKA CONTRIBUTERS

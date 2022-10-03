@@ -2,9 +2,12 @@
 		{
 			margin: 0;
 			padding: 0;
-			font-family: 'Merriweather Sans', sans-serif !important;
-			font-family: 'Montserrat', sans-serif !important;
-			
+			    font-family: 'Merriweather Sans', sans-serif;
+
+    font-family: 'Montserrat', sans-serif;
+
+    font-family: 'Roboto', sans-serif !important;
+			color: grey !important;
 		}	
 		body
 		{
@@ -12,6 +15,8 @@
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
+			background-color: white;
+
 		}
 		
 		#message
@@ -56,10 +61,10 @@
 		}
 		#form_container
 		{
-			background-color: #EBEBEB;
-			border-radius: 3%;
+			background-color:white;
+			
 			padding: 2%;
-			width: 30%;
+			width: 25%;
 			margin: 2% 0;
 		}
 		#title
@@ -69,7 +74,7 @@
 			margin: auto;
 			text-align: center;
 			border-bottom:  solid 1px #D8D8D8;
-			color: #4D4D50;
+			color: #808080;
 
 			width: 80%;
 		}

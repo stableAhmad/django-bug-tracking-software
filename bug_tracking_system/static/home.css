@@ -10,7 +10,10 @@
 	color: black;
 }
 
-
+#new_project
+{
+	margin:auto !important;
+}
 #additional
 {
 	margin: 0 !important;
@@ -105,6 +108,9 @@ tr
 #results
 {
 	width: 66.6%;
+	display: flex ;
+	flex-direction: column;
+	jusify-content: center;
 }
 
 body
