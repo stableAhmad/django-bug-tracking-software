@@ -205,27 +205,19 @@ $("#add_project").click(function (){
  			window.alert("Project title is required");
  		}else
  		{
- 		const currentYear = new Date().getFullYear();
 
-const currentMonth = new Date().getMonth() + 1;
+let project_name = name 
 
-const currentDay = new Date().getDate();
-let new_project = 
-{
-	'name':name,
-	'month':currentMonth,
-	'day':currentDay,
-	'year':currentYear
-}
-data =JSON.stringify(new_project)
+
 $.ajax(
   	{
   		url:"{% url 'home' %}",
   		type:"GET",
-  		headers:{"searchWord":value , "ajax":true , "ajaxFunction":"add" },
+  		headers:{"data":project_name , "ajax":true , "ajaxFunction":"add" },
   		success :function (data)
   		{
-  			 wrapper = json_to_html(data)
+  			$("#new_project_name").val("")
+  			wrapper = json_to_html(data)
   			 document.getElementById("table_body").innerHTML =wrapper
        		  if(wrapper === "")
         		{	

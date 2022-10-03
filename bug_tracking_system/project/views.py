@@ -3,6 +3,7 @@ import json
 from django.core.mail import send_mail
 from django.shortcuts import render
 from .models import project
+from datetime import datetime
 # Create your views here.
 
 def home(request):
@@ -22,6 +23,16 @@ def home(request):
 		keyword = request.headers.get("searchWord")	
 		response = projects.filter(name__startswith = keyword)	
 		return final_json_response(response)	
+
+	elif(request.method == 'GET' and request.headers.get("ajax")=="true" and request.headers.get("ajaxFunction")=="add"):
+		name = request.headers.get("data")
+		new_project = project()
+		new_project.name = 	name
+		new_project.date_added = datetime.now()
+		new_project.bugs_count = 0
+		new_project.save()
+		
+		return final_json_response(projects)
 		
 	
 	
@@ -44,10 +55,5 @@ def final_json_response(data):
 		return JsonResponse(json_list , safe = False)	
 
 
-def send_verification(to_email):
-	title = "dd"
-	message = "dd"
-	res = send_mail(title,message, "djangobugtrackingsoftware@gmail.com", [to_email])
-	print(res)
 
 
