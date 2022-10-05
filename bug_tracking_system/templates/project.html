@@ -1,0 +1,22 @@
+
+
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css_files %}
+
+
+<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'base.css' %}">
+
+
+<link rel="stylesheet" href="{% static 'home.css' %}">
+{% endblock %}
+
+{% block content %}
+	{% for report in reports %}
+		{{report.title}}
+		<img src=../{{report.attachment}}>
+	{% endfor %}
+{% endblock %}

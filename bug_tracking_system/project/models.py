@@ -11,6 +11,7 @@ class project(models.Model):
 		return {
 		'name':self.name,
 		'date':str(self.date_added),
-		"bugs_count":self.bugs_count
+		"bugs_count":self.bugs_count,
+		"id":self.id
 		}
 

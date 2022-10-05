@@ -51,9 +51,10 @@
 
 				<tr>
 					<th scope="row"> {{ forloop.counter }}</th>
-					<td><a class="a_color">{{ project.name }}</a></td>
+					<td><a href="{% url 'home' %}/{{project.id}}" class="a_color">{{ project.name }}</a></td>
 					<td>{{ project.bugs_count }}</td>
 					<td>{{ project.date_added }}</td>
+					<td><button class="remove_project" id="{{ project.id }}" >Remove</button></td>
 				</tr>
 
 				{% endfor %}
@@ -128,7 +129,7 @@
         {
           document.getElementById("table_body").innerHTML = "no result found"
         }
-        
+        enable_delete()
 
       }
     })
@@ -152,6 +153,7 @@
         		{	
          		 document.getElementById("table_body").innerHTML = "no result found"
         		}
+        		enable_delete()
   		}
   	})
   })
@@ -178,9 +180,10 @@
  		wrapper +=`
           <tr>
           <th scope="row"> ${ counter }</th>
-          <td ><a class="a_color">${x.name}</a></td>
+          <td ><a href="{% url 'home' %}/${x.id}" class="a_color">${x.name}</a></td>
           <td >${x.bugs_count}</td>
           <td >${x.date}</td>
+          <td><button class="remove_project" id="${x.id}" >Remove</button></td>
           </tr> 
           `
           counter ++
@@ -223,11 +226,44 @@ $.ajax(
         		{	
          		 document.getElementById("table_body").innerHTML = "no result found"
         		}
+        		enable_delete()
   		}
   	})
 }
  	})
  }
+enable_delete()
+function enable_delete()
+{
+	col = document.getElementsByClassName("remove_project")
+	for(let i = 0 ; i < col.length ; i++)
+	{
+		
+		
+		
+		col[i].addEventListener("click" , function (event)
+		{
+			to_send = event.target.id
+			$.ajax( 
+			{
+				url : "{% url 'home' %}",
+				type :"GET",
+				headers:{"data":to_send , "ajax":true , "ajaxFunction":"delete" },
+				success : function (data){
+					wrapper = json_to_html(data)
+  			 document.getElementById("table_body").innerHTML =wrapper
+       		  if(wrapper === "")
+        		{	
+         		 document.getElementById("table_body").innerHTML = "no result found"
+        		}
+        		enable_delete()
+				}
+			})
+		})
+	}
+}
+
+
 
 </script>
 

@@ -16,7 +16,9 @@ def home(request):
 			method = request.headers.get("method")
 
 			projects = projects.order_by(method)
-			return final_json_response(projects)	
+			response = final_json_response(projects)
+
+			return response
 		except Exception as e:
 			print(e)
 	elif ((request.method == 'GET'and request.headers.get("ajax")=="true" and request.headers.get("ajaxFunction")=="search")):	
@@ -33,8 +35,10 @@ def home(request):
 		new_project.save()
 		
 		return final_json_response(projects)
-		
-	
+	elif(request.method == 'GET' and request.headers.get("ajax")=="true" and request.headers.get("ajaxFunction")=="delete"):
+		id = request.headers.get("data")
+		project.objects.all().filter(id=id).delete()
+		return final_json_response(project.objects.all())
 	
 
 	
