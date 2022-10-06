@@ -14,7 +14,34 @@
 
 {% block content %}
 
+<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Title</th>
+					<th scope="col">Severity</th>
+					<th scope="col">Submitted by</th>
+                    <th scope="col">Project</th>
+                    <th scope="col">State</th>
+                    <th scope="col">Date added</th>
+				</tr>
+			</thead>
+			<tbody id="table_body">
+				{% for report in reports %}
+				<tr>
+					<th scope="row"> {{ forloop.counter }}</th>
+					<td><a href="{% url 'reports' %}/{{report.id}}" class="a_color">{{ report.title }}</a></td>
+                    <td>{{ report.severity }}</td>
+					<td>{{ report.reported_by }}</td>
+                    <td>{{ report.belongs_to }}</td>
+                    <td>{{ report.state }}</td>
+                    <td>{{ report.date_added }}</td>
+				</tr>
 
+				{% endfor %}
+
+			</tbody>
+		</table>
 
 
 <script src="{% static 'JS/jquery.js' %}"></script>
