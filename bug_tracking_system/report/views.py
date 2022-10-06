@@ -18,9 +18,11 @@ def render_reports(request , id):
 
 
 	if(request.method == 'GET'and request.headers.get("ajax")=="true" and request.headers.get("data")=="reports"):
-		reports_list = [ s.to_json() for s in results]
-		test = get_final_json_response(reports_list)
-		return test
+		id = request.headers.get("reportid")
+		target_report = results.filter(id= id)[0].to_json()
+		report_json = json.dumps(target_report)
+		return JsonResponse(report_json , safe = False)
+		
 	return render(request , "project.html",context)
 
 def get_final_json_response(list_of_objects):
@@ -35,4 +37,4 @@ def get_final_json_response(list_of_objects):
 
 def all_reports(request):
 	
-	return render(request , "reports.html"	)	
+	return render(request , "reports.html")	

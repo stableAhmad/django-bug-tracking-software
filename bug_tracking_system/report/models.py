@@ -14,7 +14,7 @@ class report(models.Model):
     )
     severity = models.CharField(max_length=20, choices=options, default="high")
     description = models.TextField()
-    attachment = models.FileField(upload_to='uploads/' , blank = True)
+    attachment = models.FileField(upload_to='static/uploads/' , blank = True)
     states = (
           ("O", "open")
         , ("C", "closed")
@@ -33,7 +33,7 @@ class report(models.Model):
         'title':self.title,
         'severity':self.severity,
         'description':self.description,
-        'attachment':self.attachment.path,
+        'attachment':self.attachment.url,
         "state":self.state,
         "date_added":str(self.date_added),
         "reported_by":user_to_json(self.reported_by),

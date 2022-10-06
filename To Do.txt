@@ -36,3 +36,8 @@ open shell and test if password changed or not
 
 4-PROJECTS
 		-EACH PROJECT SHOULD HAVE A TEAM MEMEBRS AKA CONTRIBUTERS
+
+
+
+
+-to make the attachment path relative

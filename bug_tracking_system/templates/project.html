@@ -77,36 +77,71 @@
 
 
 </div>
-
+<div id="test"></div>
 <script src="{% static 'JS/jquery.js' %}"></script>
 <script src="{% static 'JS/home-js.js' %}"></script>
 <script >
 
 	
-
 	
-	function get_reports_info()
+	function get_reports_info(report_id)
 	{
+		
+		
 		$.ajax({
 			url:"{% url 'project' project.id %}",
 			type:'GET',
-			headers:{'ajax':true,"data":"reports"},
+			headers:{'ajax':true,"data":"reports","reportid":report_id},
 			success:function(data){
-				//detailed reports here
-				//render in reports section
+				let parsed_object = JSON.parse(data)
+				
+				assigned_to_html = ``
+				for(let i = 0 ; i<parsed_object.assigned_to.length ; i++)
+				{
+					assigned_to_html+=`<p>${parsed_object.assigned_to[i].username}</p>`
+				}
+				let wrapper =`
+				<label>title</label>
+				<p>${parsed_object.title}</p>
+				<label>project</label>
+				<p>${parsed_object.belongs_to.name}</p>
+				<label>severity</label>
+				<p>${parsed_object.severity}</p>
+				<label>description</label>
+				<p>${parsed_object.description}</p>
+				<label>attachment</label>
+				<img src="${parsed_object.attachment}">
+				<label>state</label>
+				<p>${parsed_object.state}</p>
+				<label>date added</label>
+				<p>${parsed_object.date_added}</p>
+				<label>reported by</label>
+				<p>${parsed_object.reported_by.username}</p>
+				<label>assigned to</label>
+				${assigned_to_html}
+				`
+
+				 $("#report_info").html(wrapper)
+				
 			}
-		})		
+		})
+		
+		
 	}
 
+	
 
-	get_reports_info()
+
+	
 
 	col = document.getElementsByClassName("details")
 	for(let i = 0; i < col.length ; i++)
 	{
 		col[i].addEventListener("click",function (event){
 			id_fetch = event.target.id
-
+			test = get_reports_info(id_fetch)
+			
+		
 			
 		})
 	}
