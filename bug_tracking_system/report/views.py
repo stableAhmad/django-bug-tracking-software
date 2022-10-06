@@ -11,7 +11,7 @@ import json
 def render_reports(request, id):
     results = report.objects.all().filter(belongs_to__id=id)
     current_project = project.objects.all().filter(id=id)[0]
-
+    current_project.bugs_count = results.count()
     context = {"project": current_project, "reports": results}
 
     if request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get("data") == "reports":
