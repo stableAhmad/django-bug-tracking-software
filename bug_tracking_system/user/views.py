@@ -136,4 +136,18 @@ def is_valid(form_dic):
     return True
 
 
+def user_to_json(user):
+    return{
+    "username":user.username,
+    }
+
+
+def many_to_many_to_json(collection):
+    list = []
+    for s in collection.all():
+        temp = {
+            'username':s.username
+        }
+        list.append(temp)
+    return list
 

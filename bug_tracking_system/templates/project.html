@@ -27,7 +27,7 @@
 			<h1 class="display-1" id="project_title">{{ project.name }}</h1>
 			<h4 >Reports : {{ project.bugs_count }}</h4>
 
-			<table class="table table-hover">
+			<table class="table table-hover mt-5">
 				<thead>
 					<tr>
 						<th scope="col">#</th>
@@ -45,9 +45,9 @@
 						<th scope="row">{{ forloop.counter }}</th>
 						<td>{{report.title}}</td>
 						<td>{{report.severity}}</td>
-						<td>{{report.reported_by}}</td>
+						<td>{{report.reported_by.username}}</td>
 						<td><p>
-							<a class="btn btn-primary" id= "{{report.id}}" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="{{report.id}}">Details</a>
+							<a class="btn btn-primary details" id= "{{report.id}}" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="{{report.id}}">Details</a>
 
 						</p></td>
 					</tr>
@@ -64,14 +64,14 @@
 	</div>
 
 
-	<div class="row justify-content-between">
-		<div id="report_info" class="col-6">
-			jdlakwjdlkaw
-		</div>
-		<div id="discussion" class="col-6">
-			right
-		</div>
-
+	<div id="second_row">
+		<div class="row justify-content-between collapse multi-collapse clpsd" id="multiCollapseExample1">
+          <div id="report_info" class="col-6 card card-body">
+          bug content
+          </div>
+          <div id="discussion" class="col-6">
+          discussion
+          </div></div> 
 	</div>
 
 
@@ -82,58 +82,34 @@
 <script src="{% static 'JS/home-js.js' %}"></script>
 <script >
 
-	let select =$("#sort_select")
+	
 
-
-	select.change(function ()
+	
+	function get_reports_info()
 	{
-		var method = $("#sort_select").val()
-		if (method == "Sort by")return 
-			$.ajax(
-			{
-				url: "{% url 'home' %}",
-				type:'GET',
+		$.ajax({
+			url:"{% url 'project' project.id %}",
+			type:'GET',
+			headers:{'ajax':true,"data":"reports"},
+			success:function(data){
+				//detailed reports here
+				//render in reports section
+			}
+		})		
+	}
 
-				headers: {"method": method , "ajax":true , "ajaxFunction":"sort"},
-				success:function(data)
-				{
 
-					wrapper = json_to_html(data)
+	get_reports_info()
 
-					document.getElementById("table_body").innerHTML =wrapper
-					if(wrapper === "")
-					{
-						document.getElementById("table_body").innerHTML = "no result found"
-					}
-					enable_delete()
+	col = document.getElementsByClassName("details")
+	for(let i = 0; i < col.length ; i++)
+	{
+		col[i].addEventListener("click",function (event){
+			id_fetch = event.target.id
 
-				}
-			})
-	})
-
-  //search ajax
-  let search = $("#search_input")
-  search.on('input', function() 
-  {
-  	var value = search.val()
-  	$.ajax(
-  	{
-  		url:"{% url 'home' %}",
-  		type:"GET",
-  		headers:{"searchWord":value , "ajax":true , "ajaxFunction":"search" },
-  		success :function (data)
-  		{
-  			wrapper = json_to_html(data)
-  			document.getElementById("table_body").innerHTML =wrapper
-  			if(wrapper === "")
-  			{	
-  				document.getElementById("table_body").innerHTML = "no result found"
-  			}
-  			enable_delete()
-  		}
-  	})
-  })
-
+			
+		})
+	}
 
   function json_to_html(json_data)
   {
@@ -169,75 +145,6 @@
   }
 
 
-  $("#add_project").click(function (){
-  	send_project()
-  })
-
-  function send_project()
-  {
-  	$("#save_changes").click(function ()
-  	{
-  		name = $("#new_project_name").val()
-
-  		if(name == "")
-  		{
-  			window.alert("Project title is required");
-  		}else
-  		{
-
-  			let project_name = name 
-
-
-  			$.ajax(
-  			{
-  				url:"{% url 'home' %}",
-  				type:"GET",
-  				headers:{"data":project_name , "ajax":true , "ajaxFunction":"add" },
-  				success :function (data)
-  				{
-  					$("#new_project_name").val("")
-  					wrapper = json_to_html(data)
-  					document.getElementById("table_body").innerHTML =wrapper
-  					if(wrapper === "")
-  					{	
-  						document.getElementById("table_body").innerHTML = "no result found"
-  					}
-  					enable_delete()
-  				}
-  			})
-  		}
-  	})
-  }
-  enable_delete()
-  function enable_delete()
-  {
-  	col = document.getElementsByClassName("remove_project")
-  	for(let i = 0 ; i < col.length ; i++)
-  	{
-
-
-
-  		col[i].addEventListener("click" , function (event)
-  		{
-  			to_send = event.target.id
-  			$.ajax( 
-  			{
-  				url : "{% url 'home' %}",
-  				type :"GET",
-  				headers:{"data":to_send , "ajax":true , "ajaxFunction":"delete" },
-  				success : function (data){
-  					wrapper = json_to_html(data)
-  					document.getElementById("table_body").innerHTML =wrapper
-  					if(wrapper === "")
-  					{	
-  						document.getElementById("table_body").innerHTML = "no result found"
-  					}
-  					enable_delete()
-  				}
-  			})
-  		})
-  	}
-  }
 
 
 

@@ -193,17 +193,29 @@
  }
 
 
+ let add_project_enabled = false
+
 $("#add_project").click(function (){
-	send_project()
+
+	if(!add_project_enabled)
+	{
+
+		send_project()
+		add_project_enabled = true
+	}
 })
 
  function send_project()
  {
  	$("#save_changes").click(function ()
  	{
+
  		name = $("#new_project_name").val()
 
- 		if(name == "")
+ 		console.log(name)
+
+
+ 		if(name === "")
  		{
  			window.alert("Project title is required");
  		}else

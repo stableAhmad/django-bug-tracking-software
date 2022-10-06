@@ -28,6 +28,7 @@ def home(request):
 
 	elif(request.method == 'GET' and request.headers.get("ajax")=="true" and request.headers.get("ajaxFunction")=="add"):
 		name = request.headers.get("data")
+		print(name)
 		new_project = project()
 		new_project.name = 	name
 		new_project.date_added = datetime.now()
