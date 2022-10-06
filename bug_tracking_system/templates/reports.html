@@ -33,7 +33,7 @@
 					<td><a href="{% url 'reports' %}/{{report.id}}" class="a_color">{{ report.title }}</a></td>
                     <td>{{ report.severity }}</td>
 					<td>{{ report.reported_by }}</td>
-                    <td>{{ report.belongs_to }}</td>
+                    <td>{{ report.belongs_to.name }}</td>
                     <td>{{ report.state }}</td>
                     <td>{{ report.date_added }}</td>
 				</tr>
