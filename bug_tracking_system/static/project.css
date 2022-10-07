@@ -1,4 +1,21 @@
-.container
+#download_attachment
 {
-	width: 100%;
+	color: black !important;
+}
+
+.report_unit
+{
+	display: flex;
+	justify-content: around;
+}
+.report_description
+{
+	border: solid 1px black;
+}
+
+.report_description_container
+{
+	display: flex;
+	flex-direction: column !important;
+	justify-content: around;
 }

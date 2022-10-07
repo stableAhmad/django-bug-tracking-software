@@ -5,7 +5,7 @@ from user.views import signed_up , sign_in , \
  reidrect_logout ,password_reset_view, password_reset_done_view, \
   password_reset_confirm_view , password_reset_complete_view 
 from project.views import home
-from report.views import render_reports , all_reports
+from report.views import render_reports , all_reports , download_report_attachment
 from .views import base
 
 urlpatterns = [
@@ -20,6 +20,7 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="password_reset_confirm.html"), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'), name='password_reset_complete'),
     path('home/<int:id>/', render_reports , name="project"),
-    path('reports' , all_reports , name="reports")
+    path('reports' , all_reports , name="reports"),
+    path('home/<int:project_id>/download/<int:report_id>/' , download_report_attachment , name = "download")
     
 ]

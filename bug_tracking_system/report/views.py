@@ -1,8 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render , redirect
+from django.http import HttpResponse , StreamingHttpResponse
+#from WSGIREF.UTIL import FileWrapper
+import mimetypes
 from .models import report
 from project.models import project
-
+import os
 from django.http import JsonResponse
 
 import json
@@ -12,11 +14,14 @@ def render_reports(request, id):
     results = report.objects.all().filter(belongs_to__id=id)
     current_project = project.objects.all().filter(id=id)[0]
     current_project.bugs_count = results.count()
+    current_project.save()
     context = {"project": current_project, "reports": results}
 
     if request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get("data") == "reports":
         id = request.headers.get("reportid")
+        print("test here")
         target_report = results.filter(id=id)[0].to_json()
+
         report_json = json.dumps(target_report)
         return JsonResponse(report_json, safe=False)
 
@@ -38,3 +43,13 @@ def all_reports(request):
     context = {"reports": reports}
 
     return render(request, "reports.html", context)
+
+
+def download_report_attachment(request , project_id,report_id ):
+    target = report.objects.all().filter(id=report_id)[0]
+    filename = target.attachment.name.split('/')[-1]
+    response = HttpResponse(target.attachment, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+    return response
+

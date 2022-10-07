@@ -67,7 +67,7 @@
 	<div id="second_row">
 		<div class="row justify-content-between collapse multi-collapse clpsd" id="multiCollapseExample1">
           <div id="report_info" class="col-6 card card-body">
-          bug content
+          
           </div>
           <div id="discussion" class="col-6">
           discussion
@@ -100,29 +100,45 @@
 				{
 					assigned_to_html+=`<p>${parsed_object.assigned_to[i].username}</p>`
 				}
+				let attachment_type , attachment_url
+				if(parsed_object.attachment === "")
+				{
+					attachment_type = "There is no attachment"
+				}else
+				{
+					attachment_type = parsed_object.attachment.match("/.(.*)/")
+
+				}
 				let wrapper =`
-				<label>title</label>
-				<p>${parsed_object.title}</p>
-				<label>project</label>
-				<p>${parsed_object.belongs_to.name}</p>
-				<label>severity</label>
-				<p>${parsed_object.severity}</p>
-				<label>description</label>
-				<p>${parsed_object.description}</p>
-				<label>attachment</label>
-				<img src="${parsed_object.attachment}">
-				<label>state</label>
-				<p>${parsed_object.state}</p>
-				<label>date added</label>
-				<p>${parsed_object.date_added}</p>
-				<label>reported by</label>
-				<p>${parsed_object.reported_by.username}</p>
+				<div class="report_unit"><label>title : </label>
+				<p>${parsed_object.title}</p></div>
+				<div class="report_unit"><label>Project : </label>
+				<p>${parsed_object.belongs_to.name}</p></div>
+				<div class="report_unit"><label>severity :</label>
+				<p>${parsed_object.severity}</p></div>
+				<div class="report_unit report_description_container"><label>description</label>
+
+				<p class="report_description">${parsed_object.description}</p></div>
+
+				<div class="report_unit"><label>${attachment_type}-</label>
+				<a  id="download_attachment" href="#download_atatchment" >Download attachment</a></div>
+				<div class="report_unit"><label>state</label>
+				<p>${parsed_object.state}</p></div>
+				<div class="report_unit"><label>date added</label>
+				<p>${parsed_object.date_added}</p></div>
+				<div class="report_unit"><label>reported by</label>
+				<p>${parsed_object.reported_by.username}</p></div>
 				<label>assigned to</label>
 				${assigned_to_html}
 				`
 
 				 $("#report_info").html(wrapper)
-				
+				 if(! (attachment_type === "There is no attachment"))
+				 {
+				 	console.log("true cond")
+				 	link = `download/${parsed_object.id}`
+				 	document.getElementById("download_attachment").href = link
+				 }
 			}
 		})
 		
