@@ -29,14 +29,21 @@ class report(models.Model):
     belongs_to = models.ForeignKey(project, on_delete=models.SET_NULL, null=True, blank=True)
 
     def to_json(self):
-        return {
+        return_value = {
+            'id':self.id,
             'title': self.title,
             'severity': self.severity,
             'description': self.description,
-            'attachment': self.attachment.url,
+            'attachment': "temp",
             "state": self.state,
             "date_added": str(self.date_added),
             "reported_by": user_to_json(self.reported_by),
             "assigned_to": many_to_many_to_json(self.assigned_to),
             "belongs_to": self.belongs_to.to_json()
         }
+        if self.attachment.name:
+            return_value["attachment"]=self.attachment.url
+        else:
+            return_value["attachment"]=""
+        return return_value    
+        
