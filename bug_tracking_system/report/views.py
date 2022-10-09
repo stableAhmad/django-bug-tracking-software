@@ -1,12 +1,11 @@
-from django.shortcuts import render , redirect
-from django.http import HttpResponse , StreamingHttpResponse
-#from WSGIREF.UTIL import FileWrapper
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, StreamingHttpResponse
+# from WSGIREF.UTIL import FileWrapper
 import mimetypes
 from .models import report
 from project.models import project
 import os
 from django.http import JsonResponse
-
 import json
 
 
@@ -41,15 +40,30 @@ def get_final_json_response(list_of_objects):
 def all_reports(request):
     reports = report.objects.all()
     context = {"reports": reports}
-
+    if request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get(
+            "ajaxFunction") == "showOpen" and request.headers.get("method") == "open":
+        rep = reports.exclude(state="Closed")
+        return reports_collection_to_json(rep)
+    elif request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get(
+            "ajaxFunction") == "showOpen" and request.headers.get("method") == "all":
+        return reports_collection_to_json(reports)
     return render(request, "reports.html", context)
 
 
-def download_report_attachment(request , project_id,report_id ):
+def reports_collection_to_json(repports):
+    values = [p.to_json() for p in repports]
+    json_list = []
+
+    for value in values:
+        json_list.append(json.dumps(value))
+    json_list = json.dumps(json_list)
+    return JsonResponse(json_list, safe=False)
+
+
+def download_report_attachment(request, project_id, report_id):
     target = report.objects.all().filter(id=report_id)[0]
     filename = target.attachment.name.split('/')[-1]
     response = HttpResponse(target.attachment, content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
 
     return response
-

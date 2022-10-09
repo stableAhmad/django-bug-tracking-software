@@ -5,46 +5,123 @@
 {% block css_files %}
 
 
-<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
-<link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
 
 
-<link rel="stylesheet" href="{% static 'home.css' %}">
+    <link rel="stylesheet" href="{% static 'home.css' %}">
 {% endblock %}
 
 {% block content %}
 
-<table class="table">
-			<thead>
-				<tr>
-					<th scope="col">#</th>
-					<th scope="col">Title</th>
-					<th scope="col">Severity</th>
-					<th scope="col">Submitted by</th>
-                    <th scope="col">Project</th>
-                    <th scope="col">State</th>
-                    <th scope="col">Date added</th>
-				</tr>
-			</thead>
-			<tbody id="table_body">
-				{% for report in reports %}
-				<tr>
-					<th scope="row"> {{ forloop.counter }}</th>
-					<td><a href="{% url 'reports' %}/{{report.id}}" class="a_color">{{ report.title }}</a></td>
-                    <td>{{ report.severity }}</td>
-					<td>{{ report.reported_by }}</td>
-                    <td>{{ report.belongs_to.name }}</td>
-                    <td>{{ report.state }}</td>
-                    <td>{{ report.date_added }}</td>
-				</tr>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Severity</th>
+            <th scope="col">Submitted by</th>
+            <th scope="col">Project</th>
+            <th scope="col">State</th>
+            <th scope="col">Date added</th>
+        </tr>
+        </thead>
+        <tbody id="table_body">
+        {% for report in reports %}
+            <tr>
+                <th scope="row"> {{ forloop.counter }}</th>
+                <td><a href="{% url 'reports' %}/{{ report.id }}" class="a_color">{{ report.title }}</a></td>
+                <td>{{ report.severity }}</td>
+                <td>{{ report.reported_by }}</td>
+                <td>{{ report.belongs_to.name }}</td>
+                <td>{{ report.state }}</td>
+                <td>{{ report.date_added }}</td>
+            </tr>
 
-				{% endfor %}
+        {% endfor %}
 
-			</tbody>
-		</table>
+        </tbody>
+    </table>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="openfilter">
+        <label class="form-check-label" for="flexCheckDefault">
+            Show opened
+        </label>
+    </div>
+
+    <script src="{% static 'JS/jquery.js' %}"></script>
+    <script src="{% static 'JS/home-js.js' %}"></script>
+    <script>
+        $("#openfilter").change(function (event) {
+            if (event.target.checked) {
+                var method = "open"
+                $.ajax(
+                    {
+                        url: "{% url 'reports' %}",
+                        type: 'GET',
+
+                        headers: {"method":method, "ajax": true, "ajaxFunction": "showOpen"},
+                        success: function (data) {
+                            let wrapper = json_to_html(data)
+                            document.getElementById("table_body").innerHTML = wrapper
+                            if (wrapper === "") {
+                                document.getElementById("table_body").innerHTML = "no result found"
+                            }
+                        }
+                    })
+            }else{
+                 var method = "all"
+                $.ajax(
+                    {
+                        url: "{% url 'reports' %}",
+                        type: 'GET',
+
+                        headers: {"method":method, "ajax": true, "ajaxFunction": "showOpen"},
+                        success: function (data) {
+                            let wrapper = json_to_html(data)
+                            document.getElementById("table_body").innerHTML = wrapper
+                            if (wrapper === "") {
+                                document.getElementById("table_body").innerHTML = "no result found"
+                            }
+                        }
+                    })
+            }
+        })
+
+        function json_to_html(json_data) {
+            try {
+                console.log(json_data)
+                json_data = JSON.parse(json_data)
+            } catch {
+
+                return ""
+            }
+            var list = []
+
+            for (let i = 0; i < json_data.length; i++) {
+                list[i] = JSON.parse(json_data[i])
+
+            }
+            let wrapper = ``;
+            counter = 1
+            list.forEach((x) => {
+                wrapper += `
+          <tr>
+          <th scope="row"> ${counter}</th>
+          <td ><a href="{% url 'reports' %}/${x.id}" class="a_color">${x.title}</a></td>
+                <td>${ x.severity }</td>
+                <td>${ x.reported_by.username }</td>
+                <td>${ x.belongs_to.name }</td>
+                <td>${ x.state }</td>
+                <td>${ x.date_added }</td>
+          </tr>
+          `
+                counter++
+            })
+
+            return wrapper
+        }
 
 
-<script src="{% static 'JS/jquery.js' %}"></script>
-<script src="{% static 'JS/home-js.js' %}"></script>
-
+    </script>
 {% endblock %}
