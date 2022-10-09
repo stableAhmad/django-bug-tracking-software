@@ -44,7 +44,8 @@ def all_reports(request):
             "ajaxFunction") == "showOpen" and request.headers.get("method") == "open":
         rep = reports.exclude(state="Closed")
         return reports_collection_to_json(rep)
-    else:
+    elif request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get(
+            "ajaxFunction") == "showOpen" and request.headers.get("method") == "all":
         return reports_collection_to_json(reports)
     return render(request, "reports.html", context)
 
