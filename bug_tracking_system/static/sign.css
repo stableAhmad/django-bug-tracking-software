@@ -1,83 +1,109 @@
-*
-		{
-			margin: 0;
-			padding: 0;
-			    font-family: 'Merriweather Sans', sans-serif;
 
-    font-family: 'Montserrat', sans-serif;
-
-    font-family: 'Roboto', sans-serif !important;
-			color: grey !important;
-		}	
-		body
-		{
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			background-color: white;
-
-		}
-		
-		#message
-		{
-			font-size: 21px;
-		}
-		.error
-		{
-			padding: 5px 0;
-			color: #FF0000;
-			width: auto;
-		}
-		form
-		{
-			
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			flex-wrap: wrap;
-		}
-		#header_1
-		{
-			text-align: center;
-		}
-		button
-		{
-			padding: 2% 2%;
-			cursor: pointer;
-			border-radius: 13% ;
-			background-color: #3A58AF;
-			color: white;
-		}
-		a
-		{
-			color: #3A58AF;
-		}
-		#container
-		{
-			width: 100%;
-			
-		}
-		#form_container
-		{
-			background-color:white;
-			
-			padding: 2%;
-			width: 25%;
-			margin: 2% 0;
-		}
-		#title
-		{
-			font-size: 24px;
-			padding-bottom: 4%;
-			margin: auto;
-			text-align: center;
-			border-bottom:  solid 1px #D8D8D8;
-			color: #808080;
-
-			width: 80%;
-		}
+@font-face
+{
+	font-family: sst;
+	src: url(Fonts/sstw20roman.ttf) format('truetype');
+}
 
 
-		
+
+*{
+	margin: 0;
+	padding: 0;
+	font-family: 'Merriweather Sans', sans-serif;
+	font-family:sst !important;
+}	
+
+body
+{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #E5E9EC;
+
+}
+
+#message
+{
+	font-size: 21px;
+}
+.error
+{
+	padding: 5px 0;
+	color: #FF0000;
+	width: auto;
+}
+form
+{
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+}
+#header_1
+{
+	text-align: center;
+}
+button
+{
+	padding: 2% 2%;
+	cursor: pointer;
+	border-radius: 13% ;
+	background-color: #3A58AF;
+	color: white;
+}
+a
+{
+	color: #3A58AF;
+}
+#container
+{
+	width: 100%;
+
+}
+#form_container
+{
+	background-color:#FFFFFF;
+
+	
+	width: 25%;
+	margin: 2% 0;
+}
+#title
+{
+	font-size: 24px;
+	font-weight: 700;
+	font style: normal;
+	text-align: center;
+	margin: 0;
+}
+#title_space
+{
+	background-color: #00439C;
+	color: #FFFFFF;
+	width: 100%;
+	padding: 30px 0;
+}
+
+input
+{
+	border-radius: 0% !important;
+	outline: none !important;
+	border: solid 1px #c8c8c8 !important;
+}
+
+.form-control:focus 
+{
+box-shadow: none !important;
+outline: none !important;
+border-color: #c8c8c8 !important;  /*change focus border color*/
+}
+
+::placeholder
+{
+	color: rgba(0,0,0,.55) !important;
+}
+

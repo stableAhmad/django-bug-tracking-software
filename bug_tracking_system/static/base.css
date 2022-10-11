@@ -1,14 +1,19 @@
 
-
+@font-face
+{
+	font-family: sst;
+	src: url(Fonts/SSTMedium.ttf) format('truetype');
+}
 
 *
 {
 	margin: 0;
 	padding: 0;
-	font-family: 'Merriweather Sans', sans-serif !important;
-	font-family: 'Montserrat', sans-serif !important;
+	font-family: sst !important;
 	color: black;
 }
+
+
 .navbar , .container-fluid
 {
 	background-color: #3A58AF !important;
