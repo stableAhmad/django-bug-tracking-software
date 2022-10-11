@@ -41,3 +41,6 @@ open shell and test if password changed or not
 
 
 -to make the attachment path relative
+
+Reports api
+minify /compress files

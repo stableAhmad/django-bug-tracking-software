@@ -42,7 +42,7 @@
 					{% for report in reports %}
 
 					<tr>
-						<th scope="row">{{ forloop.counter }}</th>
+						<th  scope="row">{{ forloop.counter }}</th>
 						<td>{{report.title}}</td>
 						<td>{{report.severity}}</td>
 						<td>{{report.reported_by.username}}</td>
@@ -69,9 +69,16 @@
           <div id="report_info" class="col-6 card card-body">
           
           </div>
-          <div id="discussion" class="col-6">
+          <div>
+          	<div id="discussion" class="col-6">
           discussion
-          </div></div> 
+          </div>
+          <div>
+          	<textarea id="comment_input" placeholder="Add comment"></textarea>
+          	<button id="add_comment">Comment</button>
+          </div>
+          </div>
+          </div> 
 	</div>
 
 
@@ -93,7 +100,23 @@
 			type:'GET',
 			headers:{'ajax':true,"data":"reports","reportid":report_id},
 			success:function(data){
-				let parsed_object = JSON.parse(data)
+				
+				all_data = JSON.parse(data)
+				comment_section = JSON.parse(all_data["comments"])
+				comment_wrapper = ``
+				comment_section.forEach((x)=>{
+					temp = JSON.parse(x)
+					
+					comment_wrapper +=`
+					<div class="comment_div" ><div class="comment_header_container"><div>${temp.commented_by}</div>
+					<div>${temp.date}</div></div>
+					<div>${temp.content}</div></div>
+					`
+				})
+
+				document.getElementById("discussion").innerHTML = comment_wrapper
+
+				let parsed_object = JSON.parse(all_data["report"])
 				
 				assigned_to_html = ``
 				for(let i = 0 ; i<parsed_object.assigned_to.length ; i++)
@@ -111,7 +134,7 @@
 				}
 				let wrapper =`
 				<div class="report_unit"><label>title : </label>
-				<p>${parsed_object.title}</p></div>
+				<p class="detailed_report_id" id="${parsed_object.id}">${parsed_object.title}</p></div>
 				<div class="report_unit"><label>Project : </label>
 				<p>${parsed_object.belongs_to.name}</p></div>
 				<div class="report_unit"><label>severity :</label>
@@ -135,7 +158,7 @@
 				 $("#report_info").html(wrapper)
 				 if(! (attachment_type === "There is no attachment"))
 				 {
-				 	console.log("true cond")
+				 	
 				 	link = `download/${parsed_object.id}`
 				 	document.getElementById("download_attachment").href = link
 				 }
@@ -161,6 +184,40 @@
 			
 		})
 	}
+
+function send_new_comment(comment )
+{
+	$.ajax({
+		url:"{% url 'project' project.id %}",
+		type:'GET',
+		headers:{'ajax':true,"data":"comments","reportid":comment.report,"content":comment.content , "function":"comment"},
+		success:function(data){
+			//display new comments
+		}
+	})
+}
+
+document.getElementById("add_comment").addEventListener("click" ,function ()
+{
+	id = document.getElementsByClassName("detailed_report_id")[0]
+	id = id.id
+	content = document.getElementById("comment_input").value
+	if(content === '')
+	{
+		window.alert("invalid comment")
+	}else 
+	{
+		new_comment = {
+		'content':content,
+		
+		'report':id
+	}
+	document.getElementById("comment_input").value= ""
+
+	send_new_comment(new_comment)
+	}
+	
+})
 
   function json_to_html(json_data)
   {
