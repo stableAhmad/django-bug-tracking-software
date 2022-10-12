@@ -5,12 +5,14 @@
 	src: url(Fonts/sstw20roman.ttf) format('truetype');
 }
 
-
-
+@font-face
+{
+	font-family: sstbold;
+	src: url(Fonts/boldcondensed.ttf) format('truetype');
+}
 *{
 	margin: 0;
 	padding: 0;
-	font-family: 'Merriweather Sans', sans-serif;
 	font-family:sst !important;
 }	
 
@@ -39,9 +41,9 @@ form
 
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
 	flex-wrap: wrap;
+	width: 75%;
 }
 #header_1
 {
@@ -51,9 +53,10 @@ button
 {
 	padding: 2% 2%;
 	cursor: pointer;
-	border-radius: 13% ;
-	background-color: #3A58AF;
-	color: white;
+	width: 100%;
+	color: black;
+	border: solid 1px #c8c8c8 !important;
+	background-color: white;
 }
 a
 {
@@ -66,16 +69,19 @@ a
 }
 #form_container
 {
-	background-color:#FFFFFF;
-
-	
-	width: 25%;
+	background-color:#FFFFFF;	
+	width: 26%;
 	margin: 2% 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding:0 0 5% 0;
 }
 #title
 {
-	font-size: 24px;
-	font-weight: 700;
+	font-family: sstbold !important;
+	font-size: 28px;
+	font-weight: 400;
 	font style: normal;
 	text-align: center;
 	margin: 0;
@@ -105,5 +111,22 @@ border-color: #c8c8c8 !important;  /*change focus border color*/
 ::placeholder
 {
 	color: rgba(0,0,0,.55) !important;
+}
+
+
+a:link , a:visited , a:hover ,a ,a:active 
+{ text-decoration: none; }
+
+ a:hover
+ {
+ 	color: #00008B;
+ }
+
+
+
+
+button:hover , input:hover
+{
+	background-color: #FAFAFA;
 }
 

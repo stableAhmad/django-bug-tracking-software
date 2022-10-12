@@ -16,19 +16,19 @@
 </head>
 <body>
 	<div id="form_container">
-		<h1 id="title">Create an account</h1>
-		<form class="mt-5" method="POST">
+		<div id="title_space"><h1 id="title">Sign up</h1></div>
+		<form class="mt-4" method="POST">
 			{% csrf_token %}
 			<div class="mb-4" id="container">
 				{% for field in form %}
 				<div class="form-group mb-3">
-					{{ field.label }}
+					
 					{{ field }}
 				</div>
 
 				{% endfor %}
 			</div>
-			<button class="mb-2" type="submit" >Submit</button>
+			<button class="mb-2" type="submit" >Create an account</button>
 			{% for m in error_list %}
 			 <p class="error" >{{ m }}</p>
 			{% endfor %}
@@ -39,6 +39,13 @@
 	
 
 	<script src="{% static 'bootstrap.bundle.min.js' %}"> </script>	
+	<script>
+		col = document.getElementsByClassName("form-control")
+		col[0].placeholder = "Username"
+		col[1].placeholder = "E-mail"
+		col[2].placeholder = "Password"
+		col[3].placeholder = "Confirm Password"
+	</script>
 </body>
 
 </html>

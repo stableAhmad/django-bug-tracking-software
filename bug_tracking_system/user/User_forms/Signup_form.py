@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 
 
 class Signup_form(UserCreationForm):
+
     def __init__(self, *args, **kwargs):
         super(Signup_form, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():

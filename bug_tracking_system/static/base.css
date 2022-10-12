@@ -5,6 +5,12 @@
 	src: url(Fonts/SSTMedium.ttf) format('truetype');
 }
 
+@font-face
+{
+	font-family: sstlight;
+	src: url(Fonts/SSTLight.ttf) format('truetype');
+}
+
 *
 {
 	margin: 0;
@@ -16,38 +22,62 @@
 
 .navbar , .container-fluid
 {
-	background-color: #3A58AF !important;
+	background-color: black !important;
 	
 }
 
-.a_color
+.user-container
 {
-	color: #000080 !important;
+	padding: 0 10% 0 0;
+
+	
 }
 
-.testtest
-{background-color: green;}
+
+.dropdown-menu
+{
+	background-color: #2B2B2B;
+	border-radius: 0;
+	padding: 15%;
+	font-size: 90%;
+}
+
+.font_light
+{
+	font-family: sstlight !important;
+}
+
+
+#left_section
+{
+	width: 30%;
+}
+
+
 .navbar-nav
 {
-	font-size: 130%;
-	width: 80%;
+	font-size: 100%;
+	font-weight: 400;
+	width: 100%;
 	display: flex;
 	margin: auto;
 	justify-content: space-between;
 	align-items: center;
 }
 
-button 
-{
-	color: white !important;
-	background-color: #3A58AF;
-	border: solid white 1px;
-	padding: 2%;
-	border-radius: 5%;
-}
-
 a
 {
 	color: white !important;
 	cursor: pointer;
+}
+
+a:hover
+{
+	color: #007aff !important;
+
+}
+
+p 
+{
+	color: white;
 }
