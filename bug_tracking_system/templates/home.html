@@ -37,25 +37,18 @@
 		
 	</div>
 	<div id="results">
-		<table class="table">
-			<thead>
-				<tr>
-					<th scope="col">#</th>
-					<th scope="col">Title</th>
-					<th scope="col">Bugs</th>
-					<th scope="col">Date</th>
+		<table>
+			<thead id="projects_head">
+				<tr class="project_row">
+					<td>Project title</td>
+					<td>Reports found</td>
+					<td>Date</td>
 				</tr>
 			</thead>
 			<tbody id="table_body">
 				{% for project in projects %}
 
-				<tr>
-					<th scope="row"> {{ forloop.counter }}</th>
-					<td><a href="{% url 'home' %}/{{project.id}}" class="a_color">{{ project.name }}</a></td>
-					<td>{{ project.bugs_count }}</td>
-					<td>{{ project.date_added }}</td>
-					<td><button class="remove_project" id="{{ project.id }}" >Remove</button></td>
-				</tr>
+				
 
 				{% endfor %}
 

@@ -25,7 +25,8 @@ from django.core.mail import send_mail, BadHeaderError
 from .models import system
 from django.conf import settings
 
-
+def testtest(request):
+    return render(request , "test.html")
 def password_reset_view(request):
     message = {"message": "This email isn't registered yet."}
     if(request.method == "POST"):
@@ -122,9 +123,10 @@ def sign_in(request):
 
 def reidrect_logout(request):
     logout(request)
-    return redirect('/')
+    return redirect('signin')
 
-
+def redirect_home(request):
+    return redirect('home')
 
 
 def is_valid(form_dic):

@@ -7,7 +7,9 @@ from datetime import datetime
 
 
 # Create your views here.
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='signin')
 def home(request):
     projects = project.objects.all();
 

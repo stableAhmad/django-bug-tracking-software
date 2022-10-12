@@ -2,7 +2,6 @@
 {
 	margin: 0;
 	padding: 0;
-	color: black;
 }
 
 #new_project
@@ -14,6 +13,26 @@
 	margin: 0 !important;
 	padding: 0 !important;
 
+}
+
+#projects_head
+{
+	background-color: #343a40;
+	color: white;
+	display: flex;
+	width: 100%;
+	padding: 20px 40px;
+}
+
+.project_row
+{
+	width: 70%;
+	background-color: green;
+}
+
+.table
+{
+	background-color: green;
 }
 #layer_one
 {

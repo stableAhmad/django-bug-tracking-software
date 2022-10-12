@@ -9,7 +9,10 @@ import os
 from django.http import JsonResponse
 import json
 
+from django.contrib.auth.decorators import login_required
 
+
+@login_required(login_url = "signin")
 def render_reports(request, id):
     results = report.objects.all().filter(belongs_to__id=id)
     current_project = project.objects.all().filter(id=id)[0]
@@ -71,7 +74,7 @@ def get_final_json_response(list_of_objects):
 
     return JsonResponse(json_list, safe=False)
 
-
+@login_required(login_url = "signin")
 def all_reports(request):
     reports = report.objects.all()
     context = {"reports": reports}
@@ -94,7 +97,7 @@ def reports_collection_to_json(repports): #used to get json response for any col
     json_list = json.dumps(json_list)
     return JsonResponse(json_list, safe=False)
 
-
+@login_required(login_url = "signin")
 def download_report_attachment(request, project_id, report_id):
     target = report.objects.all().filter(id=report_id)[0]
     filename = target.attachment.name.split('/')[-1]
