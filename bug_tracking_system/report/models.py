@@ -61,6 +61,7 @@ class comment(models.Model):
         'commented_by':self.commented_by.username,
         'content':self.content,
         'report':self.report.title,
+        'id':self.id
         } 
           
         return return_value

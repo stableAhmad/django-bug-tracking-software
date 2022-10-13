@@ -57,3 +57,15 @@ label
 	font-size: 19px;
 	margin: 10px 0;
 }
+#comment_form
+{
+	width: 50%;
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+}
+
+.fa-xmark
+{
+	cursor: pointer;
+}
