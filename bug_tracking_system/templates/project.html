@@ -125,7 +125,30 @@
 
 
 </div>
-<div id="test"></div>
+<div id="restriction_modal">
+	<!-- Button trigger modal -->
+<button type="button" id="restrict_deletion"  data-bs-toggle="modal" data-bs-target="#exampleModa2">
+  Hidden button
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModa2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+      
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        you are not allowed to deleted other users' comments
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+</div>
 <script src="{% static 'JS/jquery.js' %}"></script>
 <script src="{% static 'JS/home-js.js' %}"></script>
 <script >
@@ -141,7 +164,7 @@
 			{
 				if(data == "")
 				{
-						//message here
+						document.getElementById("restrict_deletion").click()
 				}else 
 				{
 					comment_section = JSON.parse(data)

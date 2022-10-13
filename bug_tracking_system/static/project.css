@@ -69,3 +69,8 @@ label
 {
 	cursor: pointer;
 }
+
+#restrict_deletion
+{
+	display: none;
+}
