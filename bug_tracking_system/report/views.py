@@ -27,9 +27,7 @@ def render_reports(request, id):
 
         comment_section = comment.objects.all().filter(report__id = id).order_by("date")   
         comment_json =  comments_to_json(comment_section)
-        #comment_json = JsonResponse(comment_json , safe = False)
         report_json = json.dumps(json_target_report)
-        #report_json = JsonResponse(report_json, safe=False)
         obj = {
         'report':report_json,
         'comments':comment_json

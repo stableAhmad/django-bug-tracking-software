@@ -13,41 +13,46 @@
 {% endblock %}
 
 {% block content %}
+<div id="filter_opened"><div class="form-check mx-5">
+        <input class="form-check-input" type="checkbox" value="" id="openfilter">
+        <label class="form-check-label" for="flexCheckDefault">
+             opened
+        </label>
+    </div></div>
+<table id="reports_table" class="mt-3">
+            <thead id="projects_head">
+                <tr class="project_row">
+                    <td class="project_cell">Title</td>
+                    <td  class="project_cell">Impact</td>
+                    <td class="project_cell">Submitted by</td>
+                    <td class="project_cell">Project</td>
+                    <td class="project_cell">State</td>
+                    <td class="project_cell">Date</td>
+                    
+                </tr>
+            </thead>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Severity</th>
-            <th scope="col">Submitted by</th>
-            <th scope="col">Project</th>
-            <th scope="col">State</th>
-            <th scope="col">Date added</th>
-        </tr>
-        </thead>
+   
         <tbody id="table_body">
+            {% if not reports %}
+            <tr class="project_row data_row mb-3>"> <td class="project_cell project_data">No results</td> </tr>
+            {% endif %}
         {% for report in reports %}
-            <tr>
-                <th scope="row"> {{ forloop.counter }}</th>
-                <td><a href="{% url 'reports' %}/{{ report.id }}" class="a_color">{{ report.title }}</a></td>
-                <td>{{ report.severity }}</td>
-                <td>{{ report.reported_by }}</td>
-                <td>{{ report.belongs_to.name }}</td>
-                <td>{{ report.state }}</td>
-                <td>{{ report.date_added }}</td>
+            <tr class="project_row data_row mb-3">
+                
+                <td class="project_cell project_data"><a href="{% url 'reports' %}/{{ report.id }}" class="black_color">{{ report.title }}</a></td>
+                <td class="project_cell project_data">{{ report.severity }}</td>
+                <td class="project_cell project_data">{{ report.reported_by }}</td>
+                <td class="project_cell project_data">{{ report.belongs_to.name }}</td>
+                <td class="project_cell project_data">{{ report.state }}</td>
+                <td class="project_cell project_data">{{ report.date_added }}</td>
             </tr>
 
         {% endfor %}
 
         </tbody>
     </table>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="openfilter">
-        <label class="form-check-label" for="flexCheckDefault">
-            Show opened
-        </label>
-    </div>
+    
 
     <script src="{% static 'JS/jquery.js' %}"></script>
     <script src="{% static 'JS/home-js.js' %}"></script>
@@ -106,14 +111,13 @@
             counter = 1
             list.forEach((x) => {
                 wrapper += `
-          <tr>
-          <th scope="row"> ${counter}</th>
-          <td ><a href="{% url 'reports' %}/${x.id}" class="a_color">${x.title}</a></td>
-                <td>${ x.severity }</td>
-                <td>${ x.reported_by.username }</td>
-                <td>${ x.belongs_to.name }</td>
-                <td>${ x.state }</td>
-                <td>${ x.date_added }</td>
+          <tr class="project_row data_row mb-3">
+          <td class="project_cell project_data"><a href="{% url 'reports' %}/${x.id}" class="black_color">${x.title}</a></td>
+                <td class="project_cell project_data">${ x.severity }</td>
+                <td class="project_cell project_data"> ${ x.reported_by.username }</td>
+                <td class="project_cell project_data">${ x.belongs_to.name }</td>
+                <td class="project_cell project_data">${ x.state }</td>
+                <td class="project_cell project_data">${ x.date_added }</td>
           </tr>
           `
                 counter++

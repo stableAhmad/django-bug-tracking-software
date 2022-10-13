@@ -10,44 +10,61 @@
 
 
 <link rel="stylesheet" href="{% static 'home.css' %}">
+<link rel="stylesheet" href="{% static 'fa/css/all.css' %}">
 {% endblock %}
 
 {% block content %}
 
 <div class="container" id="home_body">
-	<div  id="filters">
-		<div class="mt-3">
-			<div class="mb-3">
+
+<div class="mt-4">
+
+		<div  id="filters">
+		
+			<div class="">
 
 				<input type="text" class="form-control" id="search_input" placeholder="Search" aria-describedby="text">
 				
 			</div>
 
-		</div>
-		<div>
-			<div>
-				<select class="form-select" id="sort_select" aria-label="Default select example">
+	
+		
+			<div class="">
+				<select class="form-select mx-3" id="sort_select" aria-label="Default select example">
 					<option >Sort by</option>
 					<option value="name">Name</option>
 					<option value="bugs_count">Bugs</option>
 					<option value="date_added">Date added</option>
 				</select>
 			</div>
-		</div>
+		
 		
 	</div>
+</div>
+	<div class="outer_results">
 	<div id="results">
-		<table>
+		<table class="mt-3">
 			<thead id="projects_head">
 				<tr class="project_row">
-					<td>Project title</td>
-					<td>Reports found</td>
-					<td>Date</td>
+					<td class="project_cell">Project title</td>
+					<td  class="project_cell">Reports found</td>
+					<td class="project_cell">Date</td>
+					
 				</tr>
 			</thead>
 			<tbody id="table_body">
+				<tr>
+					<td>{% if not projects %}
+		<div id="no_results_found">no results found</div>
+		{% endif %}</td>
+				</tr>
 				{% for project in projects %}
-
+				<tr class="project_row data_row mb-3">
+					<td class="project_cell project_data"><a  href="{% url 'home' %}/{{project.id}}" class="black_color hover_color" >{{project.name}}</a></td>
+					<td class="project_cell project_data">{{project.bugs_count}}</td>
+					<td class="project_cell project_data">{{project.date_added}}</td>
+					<td><i id="{{project.id}}" class="fa-regular fa-trash-can remove_project"></i></td>
+				</tr>
 				
 
 				{% endfor %}
@@ -55,24 +72,24 @@
 			</tbody>
 		</table>	
 	
-			<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" id="add_project" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			
+<button   id="add_project" data-bs-toggle="modal" data-bs-target="#exampleModal">
   Add project
 </button>
 
-<!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New Project</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      	
+        
+        <button type="button" id="close_window" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <form>
-      	<div class="form-group">
-      		<label for="exampleInputEmail1">Name</label>
-      		<input type="email" class="form-control" id="new_project_name" aria-describedby="emailHelp" >
+      <form id="new_p_input" class="mb-4"> 
+      	<div  class="form-group">
+      		
+      		<input  placeholder="Project title" class="form-control" id="new_project_name" >
       		
       	</div>
       	
@@ -80,24 +97,35 @@
       	
       </form>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" id="save_changes" class="btn btn-primary">Save changes</button>
+        <button type="button" id="save_changes" class="">Save changes</button>
       </div>
     </div>
   </div>
 </div>
 
 	
-		{% if not projects %}
-		<div id="no_results_found">no results found</div>
-		{% endif %}
+		
 	</div>
 </div>
+</div>
 
-
+<script src="{% static 'fa/css/all.min.js' %}"></script>
 <script src="{% static 'JS/jquery.js' %}"></script>
 <script src="{% static 'JS/home-js.js' %}"></script>
 <script >
+
+
+	document.getElementById("new_project_name").addEventListener("keypress", function(event) {
+  
+  if (event.key === "Enter") {
+   
+    event.preventDefault();
+    
+    document.getElementById("save_changes").click();
+  }
+}); 
+
+
 
   let select =$("#sort_select")
 
@@ -171,12 +199,13 @@
  	list.forEach((x)=>
  	{
  		wrapper +=`
-          <tr>
-          <th scope="row"> ${ counter }</th>
-          <td ><a href="{% url 'home' %}/${x.id}" class="a_color">${x.name}</a></td>
-          <td >${x.bugs_count}</td>
-          <td >${x.date}</td>
-          <td><button class="remove_project" id="${x.id}" >Remove</button></td>
+          <tr class="project_row data_row mb-3">
+          <td class="project_cell project_data"><a class="black_color" href="{% url 'home' %}/${x.id}">${x.name}</a></td>
+          <td class="project_cell project_data">${x.bugs_count}</td>
+          <td class="project_cell project_data">${x.date}</td>
+          
+          <td ><i id="${x.id}" class="fa-regular fa-trash-can remove_project"></i></td>
+          
           </tr> 
           `
           counter ++
@@ -204,9 +233,6 @@ $("#add_project").click(function (){
  	{
 
  		name = $("#new_project_name").val()
-
- 		console.log(name)
-
 
  		if(name === "")
  		{

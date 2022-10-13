@@ -21,18 +21,50 @@
 	color: white;
 	display: flex;
 	width: 100%;
-	padding: 20px 40px;
+	padding: 20px 35px;
+}
+
+button
+{
+	padding: 1% 2%;
+	cursor: pointer;
+	width: 65%;
+	color: black;
+	margin: auto;
+	border: solid 1px #c8c8c8 !important;
+	background-color: white;
+}
+
+#table_body
+{
+	
+	display: flex;
+	flex-direction: column;
 }
 
 .project_row
 {
-	width: 70%;
-	background-color: green;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
 }
 
-.table
+.data_row
 {
-	background-color: green;
+	background-color: white;
+	padding: 20px 35px;
+}
+.data_row:hover
+{
+	background-color:  #f2f2f2;
+}
+.project_cell
+{
+	width: 33.3%;
+}
+
+table
+{
 }
 #layer_one
 {
@@ -47,9 +79,10 @@
 }
 #sort_select
 {
-	margin-top: 20px;
+	
 	padding: 2px;
 	font-size: 19px;
+	border-radius: 0;
 }
 .project_table
 {
@@ -57,6 +90,7 @@
 	justify-content: space-evenly;
 	align-items: center;
 }
+
 .column
 {
 	width: 33.3%;
@@ -84,6 +118,12 @@ tr
 
 	align-items: center;
 }
+input
+{
+	border-radius: 0% !important;
+	outline: none !important;
+	border: solid 1px #c8c8c8 !important;
+}
 .project_table
 {
 	font-size: 19px;
@@ -106,22 +146,43 @@ tr
 	font-size: 23px;
 }
 
+.outer_results
+{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
 #home_body
 {
 	width: 100%;
 	display: flex;
-	justify-content: space-around;
-
+	flex-direction: column;
+	align-items: end;
+	justify-content: center;
+	
 }
 
 #filters
 {
-	padding: 1%;
-	border-right: solid grey 1px;
+	display: flex;
+	align-items: center;
+}
+
+.black_color
+{
+	color: black !important;
+}
+
+.form-control:focus , select:focus
+{
+box-shadow: none !important;
+outline: none !important;
+border-color: #c8c8c8 !important;  /*change focus border color*/
 }
 #results
 {
-	width: 66.6%;
+	width: 80%;
 	display: flex ;
 	flex-direction: column;
 	jusify-content: center;
@@ -132,3 +193,112 @@ body
 	background-color: #EBEBEB;
 }
 
+
+
+
+::placeholder
+{
+	color: rgba(0,0,0,.55) !important;
+}
+
+
+a:link , a:visited , a:hover ,a ,a:active 
+{ text-decoration: none; }
+
+ a:hover
+ {
+ 	color: #00008B;
+ }
+
+
+
+
+button:hover , input:hover
+{
+	background-color:  #f2f2f2;
+}
+
+
+.form-select
+{
+
+}
+
+.fa-regular
+{
+	width: 2% !important;
+	color: red;
+	font-size: 20px;
+	cursor: pointer;
+}
+.modal-content
+{
+	border-radius: 0 !important;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 20px 20px;
+}
+.modal-header
+{
+	padding :0 2px;
+	width: 100%;
+	border: 0;
+	display: flex;
+	padding: 20px 30px 20px 30px;
+}
+#dummy1
+{
+	width: 1px;
+}
+#close_window
+{
+	background-color: transparent;
+	border: 0 !important	;
+}
+#save_changes
+{
+	width: 100%;
+}
+#new_p_input
+{
+	width: 70%;
+	border: 0 !important;
+}
+.modal-footer
+{
+	border: 0 !important;
+	width: 50%;
+}
+
+#reports_table
+{
+	width: 100%;
+}
+#filter_opened
+{
+	display: flex;
+	justify-content: flex-start;
+	font-size: 20px;
+	margin: 10px;
+}
+
+#project_html_table
+{
+	width: 100%;
+}
+
+#header_right_section
+{
+	width: 20%;
+}
+#reports_by_project_table_header
+{
+	width: 60%;
+}
+
+.hover_color
+{
+	color: #2d51ff !important;
+}
