@@ -47,6 +47,16 @@ def render_reports(request, id):
         comment_section = comment.objects.all().filter(report__id = request.headers.get("reportid")).order_by("date")   
         comment_json =  comments_to_json(comment_section)
         return JsonResponse(comment_json , safe= False)
+    if request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get("data")=="deletecomment":
+        user = request.user.get_username()
+        comment_id = request.headers.get("commentid")
+        target_comment = comment.objects.all().filter(id= comment_id)[0]
+        if(target_comment.commented_by.username == user):
+            target_comment.delete()
+            id = request.headers.get("reportid")
+            return JsonResponse( comments_to_json(comment.objects.all().filter(report__id = id).order_by("date")) , safe = False)
+        else:
+            return JsonResponse("" , safe = False)    
 
     return render(request, "project.html", context)
 

@@ -130,16 +130,34 @@
 <script src="{% static 'JS/home-js.js' %}"></script>
 <script >
 
-	function delete_comment_x(comment_id)
+	function delete_comment_x(comment_id , report_id)
 	{
 		$.ajax(
 		{
 			url:"{% url 'project' project.id %}",
 			type:'GET',
-			headers:{'ajax':true,"data":"comments","commentid":comment_id},
+			headers:{'ajax':true,"data":"deletecomment","commentid":comment_id , "reportid":report_id},
 			success:function(data)
 			{
-				console.log(data)
+				if(data == "")
+				{
+						//message here
+				}else 
+				{
+					comment_section = JSON.parse(data)
+					comment_wrapper = comments_to_html(comment_section)
+					if(comment_section.length == 0)
+					{
+						document.getElementById("discussion").innerHTML = "Be the first to comment"
+			
+				
+					}else 
+					{
+						document.getElementById("discussion").innerHTML = comment_wrapper
+						enable_deleting_comments()
+					}
+
+				}
 			}
 		})
 	}
@@ -155,6 +173,9 @@ function enable_deleting_comments()
 		col[i].addEventListener("click",function(event)
 		{
 			comment_id = event.target.id
+			id = document.getElementsByClassName("detailed_report_id")[0]
+			id = id.id
+			delete_comment_x(comment_id, id)
 			
 		})
 	}
