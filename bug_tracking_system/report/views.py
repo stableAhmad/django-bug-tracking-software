@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import login_required
 def render_reports(request, id):
     results = report.objects.all().filter(belongs_to__id=id)
     current_project = project.objects.all().filter(id=id)[0]
-    current_project.bugs_count = resuwlts.count()
+    current_project.bugs_count = results.count()
     current_project.save()
     context = {"project": current_project, "reports": results}
 
