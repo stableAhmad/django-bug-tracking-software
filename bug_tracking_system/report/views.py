@@ -18,7 +18,11 @@ def render_reports(request, id):
     current_project = project.objects.all().filter(id=id)[0]
     current_project.bugs_count = results.count()
     current_project.save()
-    context = {"project": current_project, "reports": results}
+    users = User.objects.all()
+    usernames = []
+    for user in users:
+        usernames.append(user.username)
+    context = {"project": current_project, "reports": results , "users":usernames}
 
     if request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get("data") == "reports":
         id = request.headers.get("reportid")
