@@ -59,9 +59,12 @@ def render_reports(request, id):
             target_comment.delete()
             id = request.headers.get("reportid")
             return JsonResponse( comments_to_json(comment.objects.all().filter(report__id = id).order_by("date")) , safe = False)
-        else:
-            return JsonResponse("" , safe = False)    
 
+        else:
+            return JsonResponse("" , safe = False)  
+
+    if request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get("data")=="newreport":
+        print(request.headers.get("newreport"))
     return render(request, "project.html", context)
 
 

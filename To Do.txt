@@ -1,3 +1,5 @@
+fix languages ratio inside github repo
+
 bootstrap components:
 	progress
 

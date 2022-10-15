@@ -189,21 +189,51 @@
 
 	function is_valid_report(report)
 	{
+		if(report.title != "" )
+		{
+			if (report.descirption == "")report.descirption = "none"
+			if(report.attachment == "")report.attachment = "none"
+			if(report.assignedto.length == 0)report.assignedto = "not_assigned"
 
+				return true;
+		}
+	return false;
 	}
 	document.getElementById("report_an_issue").addEventListener("click",function()
 	{
 		let report = {
 			"title":document.getElementById("new_report_title").value,
 			"impact":document.getElementById("new_report_impact").value,
-			"impact":document.getElementById("new_report_impact").value,
 			"description":document.getElementById("new_report_description").value,
 			"attachment":document.getElementById("new_report_attachment").value,
 			"assignedto":$('#new_report_assigned_to').val()
 		}
-		console.log(report)
+		
+		is_valid = is_valid_report(report)
+		if(is_valid)
+		{
+				send_new_report(report)
+		}
 	})
 
+	function send_new_report(report , p_id){
+		report.assignedto = JSON.stringify(report.assignedto)
+		report_json = JSON.stringify(report)
+		
+		console.log(report_json)
+		$.ajax({
+			
+		
+			url:"{% url 'project' project.id %}",
+			type:'GET',
+			headers:{'ajax':true,"data":"newreport","projectid":p_id  , "newreport":report_json},
+			success:function(data)
+			{
+				
+			}
+
+		})
+	}
 
 	function delete_comment_x(comment_id , report_id)
 	{
