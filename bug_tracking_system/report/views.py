@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, StreamingHttpResponse
 # from WSGIREF.UTIL import FileWrapper
 import mimetypes
+from datetime import datetime
 from .models import report
 from django.contrib.auth.models import User
 from .models import report , comment
@@ -74,9 +75,15 @@ def render_reports(request, id):
         new_object.description = new_report.description
         new_object.severity = new_report.impact
         new_object.state = "Open"
-        new_object.reported_by = request.user
-        new_object.assigned_to = new_report.assignedto
-        new_object.belongs_to = project.objects().all().filter(id = id)[0].name
+        new_object.reported_by = request.user  
+       
+       
+        new_object.date_added = datetime.now()
+        new_object.belongs_to = project.objects.all().filter(id = id)[0]
+        new_object.attachment = new_report.attachment #needs a fix
+        new_object.save()
+        #adding assigned to 
+        #also after pressing on details let it takes you to the section below
     return render(request, "project.html", context)
 
 
