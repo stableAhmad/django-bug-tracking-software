@@ -2,13 +2,15 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, StreamingHttpResponse
 # from WSGIREF.UTIL import FileWrapper
 import mimetypes
+from .models import report
 from django.contrib.auth.models import User
 from .models import report , comment
 from project.models import project
 import os
 from django.http import JsonResponse
 import json
-
+import json
+from types import SimpleNamespace
 from django.contrib.auth.decorators import login_required
 
 
@@ -64,7 +66,17 @@ def render_reports(request, id):
             return JsonResponse("" , safe = False)  
 
     if request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get("data")=="newreport":
-        print(request.headers.get("newreport"))
+        json_report = request.headers.get("newreport")
+        new_report = json.loads(json_report, object_hook=lambda d: SimpleNamespace(**d))
+        new_report.assignedto =  json.loads(new_report.assignedto )
+        new_object=  report()
+        new_object.title = new_report.title
+        new_object.description = new_report.description
+        new_object.severity = new_report.impact
+        new_object.state = "Open"
+        new_object.reported_by = request.user
+        new_object.assigned_to = new_report.assignedto
+        new_object.belongs_to = project.objects().all().filter(id = id)[0].name
     return render(request, "project.html", context)
 
 
