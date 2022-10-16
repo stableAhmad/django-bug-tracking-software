@@ -19,7 +19,6 @@ class report(models.Model):
     states = (
         ("Open", "open")
         , ("Closed", "closed")
-        , ("Reopened", "reopened")
     )
 
     state = models.CharField(max_length=20, choices=states, default="open")

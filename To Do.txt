@@ -1,50 +1,24 @@
-attachment is not deleted after deleting the report
+TO DO
+   -attachment is not deleted after deleting the report
 
 fix languages ratio inside github repo
 
-bootstrap components:
-	progress
 
 
 reformat all the files
 
 replace cdn caches with static files
 
-read rl bug tracking systems' specifications
-
-mod the migrations at the end
 
 
-main page:
-	increase row height on small breakpoint for responsiveness
+delete perm in reports.html
 
-remove unnecessary js css files
+reports assigned to you
 
-
-open shell and test if password changed or not
-
-
-1-interface
- :
-	-signup html :
-		background : white or gray 
-		form : ??
-
-	-check if password has been changed 
+attachment url
 
 
 
-2-REMEMBER ME
-
-3- ROLES
-
-4-PROJECTS
-		-EACH PROJECT SHOULD HAVE A TEAM MEMEBRS AKA CONTRIBUTERS
-
-5-build api
 
 
--to make the attachment path relative
-
-Reports api
 minify /compress files

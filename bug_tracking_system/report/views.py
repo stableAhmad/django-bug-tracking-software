@@ -90,7 +90,7 @@ def render_reports(request, id):
             query |= Q(username=t)
         final_res = User.objects.all().filter(query)
         new_object.assigned_to.set(final_res)
-        return reports_collection_to_json(report.objects.all().filter(belongs_to__id = id))
+        return reports_collection_to_json(report.objects.all().filter(belongs_to__id = id).exclude( state= "Closed") )
     if request.method == 'POST' and request.headers.get("ajax") == "true" and request.headers.get("type")=="uploadingfile" and request.headers.get("valid_file")=="valid":
         target_report = report.objects.all().latest("id")
 
@@ -152,6 +152,9 @@ def all_reports(request):
     elif request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get(
             "ajaxFunction") == "showOpen" and request.headers.get("method") == "all":
         return reports_collection_to_json(reports)
+    if request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get(
+            "ajaxFunction") == "deleteperm" :   
+        pass     
     return render(request, "reports.html", context)
 
 

@@ -212,7 +212,11 @@
 <script src="{% static 'JS/home-js.js' %}"></script>
 <script >
 
-	close_report_col = document.getElementsByClassName("close_report")
+
+enable_closing_reports()
+	function enable_closing_reports()
+	{
+		close_report_col = document.getElementsByClassName("close_report")
 	for(let i = 0 ; i< close_report_col.length ;i++)
 	{
 
@@ -231,7 +235,23 @@
 					document.getElementById("restrict_closing").click()
 				}else 
 				{	
-					console.log(JSON.parse(data))
+					wrapper = reports_to_html(data)
+					document.getElementById("table_body").innerHTML = wrapper
+					col = document.getElementsByClassName("details")
+	for(let i = 0; i < col.length ; i++)
+	{
+		col[i].addEventListener("click",function (event){
+			id_fetch = event.target.id
+			test = get_reports_info(id_fetch)
+			
+			
+			
+
+			
+		})
+	}
+	enable_closing_reports()
+
 				}
 			}
 
@@ -239,6 +259,33 @@
 			
 	})
 		
+	}
+	}
+
+	function reports_to_html(json_reports)
+	{
+		let collection = JSON.parse(json_reports)
+		let wrapper = ``
+		for(let i = 0 ; i< collection.length ;i++)
+		{
+			current_object = JSON.parse(collection[i])
+			reported_by_user = current_object.reported_by.username
+		
+			wrapper += `<tr class="project_row data_row mb-3">
+						
+						<td class="project_cell project_data">${current_object.title}</td>
+						<td class="project_cell project_data">${current_object.severity}</td>
+						<td class="project_cell project_data">${reported_by_user}</td>
+						<td class="project_cell project_data"><p>
+							<a class="details black_color hover_color" id= "${current_object.id}" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="${current_object.id}">Details</a>
+
+						</p></td>
+						<td class="project_cell project_data">
+							<a class="black_color hover_color close_report" id= "${current_object.id}"  role="button">Close report</a>
+						</td>
+					</tr>`
+		}
+		return wrapper
 	}
 
 	function is_valid_report(report)
@@ -302,10 +349,26 @@
 			headers:{'ajax':true,"data":"newreport","projectid":p_id  , "newreport":report_json},
 			success:function(data)
 			{
-				
-			}
+				wrapper = reports_to_html(data)
+				document.getElementById("table_body").innerHTML = wrapper 
+				col = document.getElementsByClassName("details")
+				for(let i = 0; i < col.length ; i++)
+	{
+		col[i].addEventListener("click",function (event){
+			id_fetch = event.target.id
+			test = get_reports_info(id_fetch)
+			
+			
+			
 
+			
 		})
+	}
+
+	enable_closing_reports()
+			}
+		})
+	
 		if(file_data !== "none")
 		{
 		$.ajax({
@@ -353,6 +416,7 @@
 					{
 						document.getElementById("discussion").innerHTML = comment_wrapper
 						enable_deleting_comments()
+
 					}
 
 				}
