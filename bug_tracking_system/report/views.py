@@ -13,11 +13,14 @@ import json
 import json
 from types import SimpleNamespace
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.core.files.storage import FileSystemStorage
+import os
 
 
 @login_required(login_url = "signin")
 def render_reports(request, id):
-    results = report.objects.all().filter(belongs_to__id=id)
+    results = report.objects.all().filter(belongs_to__id=id).exclude(state="Closed")
     current_project = project.objects.all().filter(id=id)[0]
     current_project.bugs_count = results.count()
     current_project.save()
@@ -80,15 +83,45 @@ def render_reports(request, id):
        
         new_object.date_added = datetime.now()
         new_object.belongs_to = project.objects.all().filter(id = id)[0]
-        new_object.attachment = new_report.attachment #needs a fix
+        new_object.attachment = new_report.attachment 
         new_object.save()
-        #adding assigned to 
-        #also after pressing on details let it takes you to the section below
+        query = Q(username=new_report.assignedto[0])
+        for t in new_report.assignedto[1:]:
+            query |= Q(username=t)
+        final_res = User.objects.all().filter(query)
+        new_object.assigned_to.set(final_res)
+        return reports_collection_to_json(report.objects.all().filter(belongs_to__id = id))
+    if request.method == 'POST' and request.headers.get("ajax") == "true" and request.headers.get("type")=="uploadingfile" and request.headers.get("valid_file")=="valid":
+        target_report = report.objects.all().latest("id")
+
+        file = request.FILES.get("file") 
+        fss = FileSystemStorage()
+        filename = fss.save(file.name , file)
+        url = fss.url('static/uploads/'+filename)
+        handle_uploaded_file(file)
+        
+        target_report.attachment = file 
+        target_report.save()
+
+    if request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get("data")=="closeauthorization":
+        cond = "false"
+        if request.user in report.objects.all().filter(id = request.headers.get("reportid"))[0].assigned_to.all():
+            report.objects.all().filter(id = request.headers.get("reportid")).update(state = "Closed")
+            return reports_collection_to_json(report.objects.all().filter(belongs_to__id = id).exclude( state= "Closed") )
+        else:
+            return JsonResponse(cond, safe = False)    
+
+        
+            
+        
     return render(request, "project.html", context)
 
+#render after adding and delering
 
-
-
+def handle_uploaded_file(f):  
+    with open('static/uploads/'+f.name, 'wb+') as destination:  
+        for chunk in f.chunks():  
+            destination.write(chunk)
 
 def comments_to_json(comments_query_set):
     values = [ c.to_json() for c in comments_query_set ]

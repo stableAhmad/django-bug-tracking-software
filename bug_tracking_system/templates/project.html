@@ -118,7 +118,7 @@
 
 						</p></td>
 						<td class="project_cell project_data">
-							<a class="black_color hover_color" id= "{{report.id}}"  role="button">Close report</a>
+							<a class="black_color hover_color close_report" id= "{{report.id}}"  role="button">Close report</a>
 						</td>
 					</tr>
 
@@ -183,9 +183,63 @@
 
 
 </div>
+
+<div id="restriction_modal">
+	<!-- Button trigger modal -->
+	<button type="button" id="restrict_closing"  data-bs-toggle="modal" data-bs-target="#exampleModa3">
+		Hidden button
+	</button>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModa3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					You are not allowed to close any report unless it is assigned to you
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+</div>
 <script src="{% static 'JS/jquery.js' %}"></script>
 <script src="{% static 'JS/home-js.js' %}"></script>
 <script >
+
+	close_report_col = document.getElementsByClassName("close_report")
+	for(let i = 0 ; i< close_report_col.length ;i++)
+	{
+
+
+		close_report_col[i].addEventListener("click",function(event){
+				$.ajax({
+			
+		
+			url:"{% url 'project' project.id %}",
+			type:'GET',
+			headers:{'ajax':true,"data":"closeauthorization", "reportid":event.target.id},
+			success:function(data)
+			{
+				if(data == "false")
+				{
+					document.getElementById("restrict_closing").click()
+				}else 
+				{	
+					console.log(JSON.parse(data))
+				}
+			}
+
+				})
+			
+	})
+		
+	}
 
 	function is_valid_report(report)
 	{
@@ -201,6 +255,20 @@
 	}
 	document.getElementById("report_an_issue").addEventListener("click",function()
 	{
+		if(document.getElementById("new_report_attachment").value !== ""){
+			var file_data = new FormData()
+		file_data.append('file' , document.getElementById("new_report_attachment").files[0])
+		file_data.append("csrfmiddlewaretoken", "{{ csrf_token }}")
+		}else 
+		{
+		
+			var file_data = "none"
+		}
+		
+		
+		
+
+		
 		let report = {
 			"title":document.getElementById("new_report_title").value,
 			"impact":document.getElementById("new_report_impact").value,
@@ -208,19 +276,24 @@
 			"attachment":document.getElementById("new_report_attachment").value,
 			"assignedto":$('#new_report_assigned_to').val()
 		}
+
+	
 		
 		is_valid = is_valid_report(report)
 		if(is_valid)
 		{
-				send_new_report(report)
+				project_id = {{ project.id }}
+				send_new_report(report , project_id, file_data)
+				$("#new_p_input")[0].reset()
+
 		}
 	})
 
-	function send_new_report(report , p_id){
+	function send_new_report(report , p_id , file_data){
 		report.assignedto = JSON.stringify(report.assignedto)
 		report_json = JSON.stringify(report)
 		
-		console.log(report_json)
+
 		$.ajax({
 			
 		
@@ -233,9 +306,29 @@
 			}
 
 		})
+		if(file_data !== "none")
+		{
+		$.ajax({
+			
+		
+			url:"{% url 'project' project.id %}",
+			type:'POST',
+			headers:{'ajax':true,"type":"uploadingfile" , "valid_file":(file_data == "none")?"none" : "valid"  },
+			processData:false,
+			contentType:false,
+			data:file_data,
+			mimeType:"multipart/form-data",
+			success:function(data)
+			{
+				
+			}
+
+		})
+
+		}
 	}
 
-	function delete_comment_x(comment_id , report_id)
+	function delete_comment_x(comment_id , report_id )
 	{
 		$.ajax(
 		{
@@ -338,7 +431,7 @@
 			<p class="black_color size_plus">${parsed_object.belongs_to.name}</p>
 			</div>
 
-			<div class="report_unit"><label>severity</label>
+			<div id="scroll_to" class="report_unit"><label>severity</label>
 			<p class="black_color ${condition ? 'danger' : 'noraml'} size_plus">${parsed_object.severity}</p>
 			</div>
 
@@ -428,6 +521,7 @@
 		col[i].addEventListener("click",function (event){
 			id_fetch = event.target.id
 			test = get_reports_info(id_fetch)
+			
 			
 
 			

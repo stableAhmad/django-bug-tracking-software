@@ -1,3 +1,5 @@
+attachment is not deleted after deleting the report
+
 fix languages ratio inside github repo
 
 bootstrap components:
@@ -39,7 +41,7 @@ open shell and test if password changed or not
 4-PROJECTS
 		-EACH PROJECT SHOULD HAVE A TEAM MEMEBRS AKA CONTRIBUTERS
 
-
+5-build api
 
 
 -to make the attachment path relative
