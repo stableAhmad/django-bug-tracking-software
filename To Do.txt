@@ -1,7 +1,6 @@
 TO DO
    -attachment is not deleted after deleting the report
 
-fix languages ratio inside github repo
 
 
 
