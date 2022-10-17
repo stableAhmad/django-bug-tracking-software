@@ -9,6 +9,7 @@
 	flex-direction: column;
 	width: 33.3%;
 	justify-content: around;
+	padding: 5px;
 }
 label
 {
@@ -18,7 +19,7 @@ label
 
 .report_description
 {
-	
+	font-size: 20px !important;
 }
 
 .report_description_container

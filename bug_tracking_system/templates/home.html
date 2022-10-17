@@ -17,18 +17,18 @@
 
 <div class="container" id="home_body">
 
-<div class="mt-4">
+	<div class="mt-4">
 
 		<div  id="filters">
-		
+			
 			<div class="">
 
 				<input type="text" class="form-control" id="search_input" placeholder="Search" aria-describedby="text">
 				
 			</div>
 
-	
-		
+			
+			
 			<div class="">
 				<select class="form-select mx-3" id="sort_select" aria-label="Default select example">
 					<option >Sort by</option>
@@ -37,124 +37,153 @@
 					<option value="date_added">Date added</option>
 				</select>
 			</div>
-		
-		
-	</div>
-</div>
-	<div class="outer_results">
-	<div id="results">
-		<table class="mt-3">
-			<thead id="projects_head">
-				<tr class="project_row">
-					<td class="project_cell">Project title</td>
-					<td  class="project_cell">Reports found</td>
-					<td class="project_cell">Date</td>
-					
-				</tr>
-			</thead>
-			<tbody id="table_body">
-				<tr>
-					<td>{% if not projects %}
-		<div id="no_results_found">no results found</div>
-		{% endif %}</td>
-				</tr>
-				{% for project in projects %}
-				<tr class="project_row data_row mb-3">
-					<td class="project_cell project_data"><a  href="{% url 'home' %}/{{project.id}}" class="black_color hover_color" >{{project.name}}</a></td>
-					<td class="project_cell project_data">{{project.bugs_count}}</td>
-					<td class="project_cell project_data">{{project.date_added}}</td>
-					<td><i id="{{project.id}}" class="fa-regular fa-trash-can remove_project"></i></td>
-				</tr>
-				
-
-				{% endfor %}
-
-			</tbody>
-		</table>	
-	
 			
-<button   id="add_project" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Add project
-</button>
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-      	
-        
-        <button type="button" id="close_window" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <form id="new_p_input" class="mb-4"> 
-      	<div  class="form-group">
-      		
-      		<input  placeholder="Project title" class="form-control" id="new_project_name" >
-      		
-      	</div>
-      	
-      	
-      	
-      </form>
-      <div class="modal-footer">
-        <button type="button" id="save_changes" class="">Save</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-	
-		
+			
+		</div>
 	</div>
-</div>
+	<div class="outer_results">
+		<div id="results">
+			<table class="mt-3">
+				<thead id="projects_head">
+					<tr class="project_row">
+						<td class="project_cell">Project title</td>
+						<td  class="project_cell">Reports found</td>
+						<td class="project_cell">Date</td>
+						
+					</tr>
+				</thead>
+				<tbody id="table_body">
+					<tr>
+						<td>{% if not projects %}
+							<div id="no_results_found">no results found</div>
+						{% endif %}</td>
+					</tr>
+					{% for project in projects %}
+					<tr class="project_row data_row mb-3">
+						<td class="project_cell project_data"><a  href="{% url 'home' %}/{{project.id}}" class="black_color hover_color" >{{project.name}}</a></td>
+						<td class="project_cell project_data">{{project.bugs_count}}</td>
+						<td class="project_cell project_data">{{project.date_added}}</td>
+						<td><i id="{{project.id}}" class="fa-regular fa-trash-can remove_project"></i></td>
+					</tr>
+					
+
+					{% endfor %}
+
+				</tbody>
+			</table>	
+			
+			
+			<button   id="add_project" data-bs-toggle="modal" data-bs-target="#exampleModal">
+				Add project
+			</button>
+
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							
+							
+							<button type="button" id="close_window" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+
+						<form id="new_p_input" class="mb-4"> 
+							<div  class="form-group">
+								
+								<input  placeholder="Project title" class="form-control" id="new_project_name" >
+								
+							</div>
+							
+							
+							
+						</form>
+						<div class="modal-footer">
+							<button type="button" id="save_changes" class="">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			
+
+		</div>
+	</div>
 </div>
 
 <script src="{% static 'fa/css/all.min.js' %}"></script>
 <script src="{% static 'JS/jquery.js' %}"></script>
 <script src="{% static 'JS/home-js.js' %}"></script>
 <script >
+	document.title = "Home";
+	render_assigned_report()
+	function render_assigned_report()
+	{
+		
+		let list = [
+		{% for report in assigned %}
+		{
+			"title":"{{report.title}}",
+			"id":{{report.id}},
+			"project":{{report.belongs_to.id}}
+		},
+		{% endfor %}
+		]
+		
+		wrapper = `<h6 style="color:white;" id="assigned_reports_header">assigned reports</h3>
 
+		`
+		for(let i = 0 ; i< list.length ; i++)
+		{
+			wrapper+=`<a class="hover_color" href="{% url 'home' %}/${list[i].project}">${list[i].title}</P>`
+		}
 
+		if(list.length == 0)
+		{
+			document.getElementById("user_figs").innerHTML =`<h6 style="color:white;" id="assigned_reports_header">no reports assigned</h3>`
+		}else 
+		{
+			document.getElementById("user_figs").innerHTML =wrapper
+		}
+	}
 	document.getElementById("new_project_name").addEventListener("keypress", function(event) {
-  
-  if (event.key === "Enter") {
-   
-    event.preventDefault();
-    
-    document.getElementById("save_changes").click();
-  }
-}); 
+		
+		if (event.key === "Enter") {
+			
+			event.preventDefault();
+			
+			document.getElementById("save_changes").click();
+		}
+	}); 
 
 
 
-  let select =$("#sort_select")
+	let select =$("#sort_select")
 
 
-  select.change(function ()
-  {
-    var method = $("#sort_select").val()
-    if (method == "Sort by")return 
-    $.ajax(
-    {
-      url: "{% url 'home' %}",
-      type:'GET',
+	select.change(function ()
+	{
+		var method = $("#sort_select").val()
+		if (method == "Sort by")return 
+			$.ajax(
+			{
+				url: "{% url 'home' %}",
+				type:'GET',
 
-      headers: {"method": method , "ajax":true , "ajaxFunction":"sort"},
-      success:function(data)
-      {
-        
-       wrapper = json_to_html(data)
+				headers: {"method": method , "ajax":true , "ajaxFunction":"sort"},
+				success:function(data)
+				{
+					
+					wrapper = json_to_html(data)
 
-        document.getElementById("table_body").innerHTML =wrapper
-         if(wrapper === "")
-        {
-          document.getElementById("table_body").innerHTML = "no result found"
-        }
-        enable_delete()
+					document.getElementById("table_body").innerHTML =wrapper
+					if(wrapper === "")
+					{
+						document.getElementById("table_body").innerHTML = "no result found"
+					}
+					enable_delete()
 
-      }
-    })
-  })
+				}
+			})
+	})
 
   //search ajax
   let search = $("#search_input")
@@ -168,131 +197,131 @@
   		headers:{"searchWord":value , "ajax":true , "ajaxFunction":"search" },
   		success :function (data)
   		{
-  			 wrapper = json_to_html(data)
-  			 document.getElementById("table_body").innerHTML =wrapper
-       		  if(wrapper === "")
-        		{	
-         		 document.getElementById("table_body").innerHTML = "no result found"
-        		}
-        		enable_delete()
+  			wrapper = json_to_html(data)
+  			document.getElementById("table_body").innerHTML =wrapper
+  			if(wrapper === "")
+  			{	
+  				document.getElementById("table_body").innerHTML = "no result found"
+  			}
+  			enable_delete()
   		}
   	})
   })
 
 
- function json_to_html(json_data)
- {
- 	try
- 	{
- 		json_data = JSON.parse(json_data)
- 	}catch
- 	{
- 		return ""
- 	}
- 	list = []
- 	for(let i = 0 ; i< json_data.length ; i++)
- 	{
- 		list[i] = JSON.parse(json_data[i])
- 	}
- 	wrapper = ``
- 	counter = 1
- 	list.forEach((x)=>
- 	{
- 		wrapper +=`
-          <tr class="project_row data_row mb-3">
-          <td class="project_cell project_data"><a class="black_color" href="{% url 'home' %}/${x.id}">${x.name}</a></td>
-          <td class="project_cell project_data">${x.bugs_count}</td>
-          <td class="project_cell project_data">${x.date}</td>
-          
-          <td ><i id="${x.id}" class="fa-regular fa-trash-can remove_project"></i></td>
-          
-          </tr> 
-          `
-          counter ++
- 	})
-
- 	return wrapper	
- }
-
-
- let add_project_enabled = false
-
-$("#add_project").click(function (){
-
-	if(!add_project_enabled)
-	{
-
-		send_project()
-		add_project_enabled = true
-	}
-})
-
- function send_project()
- {
- 	$("#save_changes").click(function ()
- 	{
-
- 		name = $("#new_project_name").val()
-
- 		if(name === "")
- 		{
- 			window.alert("Project title is required");
- 		}else
- 		{
-
-let project_name = name 
-
-
-$.ajax(
+  function json_to_html(json_data)
+  {
+  	try
   	{
-  		url:"{% url 'home' %}",
-  		type:"GET",
-  		headers:{"data":project_name , "ajax":true , "ajaxFunction":"add" },
-  		success :function (data)
+  		json_data = JSON.parse(json_data)
+  	}catch
+  	{
+  		return ""
+  	}
+  	list = []
+  	for(let i = 0 ; i< json_data.length ; i++)
+  	{
+  		list[i] = JSON.parse(json_data[i])
+  	}
+  	wrapper = ``
+  	counter = 1
+  	list.forEach((x)=>
+  	{
+  		wrapper +=`
+  		<tr class="project_row data_row mb-3">
+  		<td class="project_cell project_data"><a class="black_color hover_color" href="{% url 'home' %}/${x.id}">${x.name}</a></td>
+  		<td class="project_cell project_data">${x.bugs_count}</td>
+  		<td class="project_cell project_data">${x.date}</td>
+  		
+  		<td ><i id="${x.id}" class="fa-regular fa-trash-can remove_project"></i></td>
+  		
+  		</tr> 
+  		`
+  		counter ++
+  	})
+
+  	return wrapper	
+  }
+
+
+  let add_project_enabled = false
+
+  $("#add_project").click(function (){
+
+  	if(!add_project_enabled)
+  	{
+
+  		send_project()
+  		add_project_enabled = true
+  	}
+  })
+
+  function send_project()
+  {
+  	$("#save_changes").click(function ()
+  	{
+
+  		name = $("#new_project_name").val()
+
+  		if(name === "")
   		{
-  			$("#new_project_name").val("")
-  			wrapper = json_to_html(data)
-  			 document.getElementById("table_body").innerHTML =wrapper
-       		  if(wrapper === "")
-        		{	
-         		 document.getElementById("table_body").innerHTML = "no result found"
-        		}
-        		enable_delete()
+  			window.alert("Project title is required");
+  		}else
+  		{
+
+  			let project_name = name 
+
+
+  			$.ajax(
+  			{
+  				url:"{% url 'home' %}",
+  				type:"GET",
+  				headers:{"data":project_name , "ajax":true , "ajaxFunction":"add" },
+  				success :function (data)
+  				{
+  					$("#new_project_name").val("")
+  					wrapper = json_to_html(data)
+  					document.getElementById("table_body").innerHTML =wrapper
+  					if(wrapper === "")
+  					{	
+  						document.getElementById("table_body").innerHTML = "no result found"
+  					}
+  					enable_delete()
+  				}
+  			})
   		}
   	})
-}
- 	})
- }
-enable_delete()
-function enable_delete()
-{
-	col = document.getElementsByClassName("remove_project")
-	for(let i = 0 ; i < col.length ; i++)
-	{
-		
-		
-		
-		col[i].addEventListener("click" , function (event)
-		{
-			to_send = event.target.id
-			$.ajax( 
-			{
-				url : "{% url 'home' %}",
-				type :"GET",
-				headers:{"data":to_send , "ajax":true , "ajaxFunction":"delete" },
-				success : function (data){
-					wrapper = json_to_html(data)
-  			 document.getElementById("table_body").innerHTML =wrapper
-       		  if(wrapper === "")
-        		{	
-         		 document.getElementById("table_body").innerHTML = "no result found"
-        		}
-        		enable_delete()
-				}
-			})
-		})
-	}
-}
+  }
+  enable_delete()
+  function enable_delete()
+  {
+  	col = document.getElementsByClassName("remove_project")
+  	for(let i = 0 ; i < col.length ; i++)
+  	{
+  		
+  		
+  		
+  		col[i].addEventListener("click" , function (event)
+  		{
+  			to_send = event.target.id
+  			$.ajax( 
+  			{
+  				url : "{% url 'home' %}",
+  				type :"GET",
+  				headers:{"data":to_send , "ajax":true , "ajaxFunction":"delete" },
+  				success : function (data){
+  					wrapper = json_to_html(data)
+  					document.getElementById("table_body").innerHTML =wrapper
+  					if(wrapper === "")
+  					{	
+  						document.getElementById("table_body").innerHTML = "no result found"
+  					}
+  					enable_delete()
+  				}
+  			})
+  		})
+  	}
+  }
 
 
 

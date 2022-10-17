@@ -5,127 +5,185 @@
 {% block css_files %}
 
 
-    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'base.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'base.css' %}">
 
-
-    <link rel="stylesheet" href="{% static 'home.css' %}">
+<link rel="stylesheet" href="{% static 'fa/css/all.min.css' %}">
+<link rel="stylesheet" href="{% static 'home.css' %}">
 {% endblock %}
 
 {% block content %}
 <div id="filter_opened"><div class="form-check mx-5">
-        <input class="form-check-input" type="checkbox" value="" id="openfilter">
-        <label class="form-check-label" for="flexCheckDefault">
-             opened
-        </label>
-    </div></div>
+    <input class="form-check-input" type="checkbox" value="" id="openfilter">
+    <label class="form-check-label" for="flexCheckDefault">
+       opened 
+   </label>
+</div></div>
 <table id="reports_table" class="mt-3">
-            <thead id="projects_head">
-                <tr class="project_row">
-                    <td class="project_cell">Title</td>
-                    <td  class="project_cell">Impact</td>
-                    <td class="project_cell">Submitted by</td>
-                    <td class="project_cell">Project</td>
-                    <td class="project_cell">State</td>
-                    <td class="project_cell">Date</td>
-                    
-                </tr>
-            </thead>
+    <thead id="projects_head">
+        <tr class="project_row">
+            <td class="project_cell">Title</td>
+            <td  class="project_cell">Impact</td>
+            <td class="project_cell">Submitted by</td>
+            <td class="project_cell">Project</td>
+            <td class="project_cell">State</td>
+            <td class="project_cell">Date</td>
+            
+        </tr>
+    </thead>
 
-   
-        <tbody id="table_body">
-            {% if not reports %}
-            <tr class="project_row data_row mb-3>"> <td class="project_cell project_data">No results</td> </tr>
-            {% endif %}
+    
+    <tbody id="table_body">
+        {% if not reports %}
+        <tr class="project_row data_row mb-3>"> <td class="project_cell project_data">No results</td> </tr>
+        {% endif %}
         {% for report in reports %}
-            <tr class="project_row data_row mb-3">
-                
-                <td class="project_cell project_data"><a href="{% url 'reports' %}/{{ report.id }}" class="black_color">{{ report.title }}</a></td>
-                <td class="project_cell project_data">{{ report.severity }}</td>
-                <td class="project_cell project_data">{{ report.reported_by }}</td>
-                <td class="project_cell project_data">{{ report.belongs_to.name }}</td>
-                <td class="project_cell project_data">{{ report.state }}</td>
-                <td class="project_cell project_data">{{ report.date_added }}</td>
-            </tr>
+        <tr class="project_row data_row mb-3">
+            
+            <td class="project_cell project_data"><a href="{% url 'reports' %}/{{ report.id }}" class="black_color">{{ report.title }}</a></td>
+            <td class="project_cell project_data">{{ report.severity }}</td>
+            <td class="project_cell project_data">{{ report.reported_by }}</td>
+            <td class="project_cell project_data">{{ report.belongs_to.name }}</td>
+            <td class="project_cell project_data">{{ report.state }}</td>
+            <td class="project_cell project_data">{{ report.date_added }}</td>
+            <td><i id="{{report.id}}" class="fa-regular fa-trash-can remove_report"></i></td>
+        </tr>
 
         {% endfor %}
 
-        </tbody>
-    </table>
-    
+    </tbody>
+</table>
 
-    <script src="{% static 'JS/jquery.js' %}"></script>
-    <script src="{% static 'JS/home-js.js' %}"></script>
-    <script>
-        $("#openfilter").change(function (event) {
-            if (event.target.checked) {
-                var method = "open"
-                $.ajax(
-                    {
-                        url: "{% url 'reports' %}",
-                        type: 'GET',
 
-                        headers: {"method":method, "ajax": true, "ajaxFunction": "showOpen"},
-                        success: function (data) {
-                            let wrapper = json_to_html(data)
-                            document.getElementById("table_body").innerHTML = wrapper
-                            if (wrapper === "") {
-                                document.getElementById("table_body").innerHTML = "no result found"
-                            }
-                        }
-                    })
-            }else{
-                 var method = "all"
-                $.ajax(
-                    {
-                        url: "{% url 'reports' %}",
-                        type: 'GET',
+<script src="{% static 'JS/jquery.js' %}"></script>
+<script src="{% static 'JS/home-js.js' %}"></script>
+<script>
+    document.title = "Reports";
+    render_assigned_report()
+    function render_assigned_report()
+    {
+        
+        let list = [
+        {% for report in assigned %}
+        {
+            "title":"{{report.title}}",
+            "id":{{report.id}},
+            "project":{{report.belongs_to.id}}
+        },
+        {% endfor %}
+        ]
+        
+        wrapper = `<h6 style="color:white;" id="assigned_reports_header">assigned reports</h3>
 
-                        headers: {"method":method, "ajax": true, "ajaxFunction": "showOpen"},
-                        success: function (data) {
-                            let wrapper = json_to_html(data)
-                            document.getElementById("table_body").innerHTML = wrapper
-                            if (wrapper === "") {
-                                document.getElementById("table_body").innerHTML = "no result found"
-                            }
-                        }
-                    })
-            }
-        })
-
-        function json_to_html(json_data) {
-            try {
-                console.log(json_data)
-                json_data = JSON.parse(json_data)
-            } catch {
-
-                return ""
-            }
-            var list = []
-
-            for (let i = 0; i < json_data.length; i++) {
-                list[i] = JSON.parse(json_data[i])
-
-            }
-            let wrapper = ``;
-            counter = 1
-            list.forEach((x) => {
-                wrapper += `
-          <tr class="project_row data_row mb-3">
-          <td class="project_cell project_data"><a href="{% url 'reports' %}/${x.id}" class="black_color">${x.title}</a></td>
-                <td class="project_cell project_data">${ x.severity }</td>
-                <td class="project_cell project_data"> ${ x.reported_by.username }</td>
-                <td class="project_cell project_data">${ x.belongs_to.name }</td>
-                <td class="project_cell project_data">${ x.state }</td>
-                <td class="project_cell project_data">${ x.date_added }</td>
-          </tr>
-          `
-                counter++
-            })
-
-            return wrapper
+        `
+        for(let i = 0 ; i< list.length ; i++)
+        {
+            wrapper+=`<a class="hover_color" href="{% url 'home' %}/${list[i].project}">${list[i].title}</P>`
         }
 
+        if(list.length == 0)
+        {
+            document.getElementById("user_figs").innerHTML =`<h6 style="color:white;" id="assigned_reports_header">no reports assigned</h3>`
+        }else 
+        {
+            document.getElementById("user_figs").innerHTML =wrapper
+        }
+    }
+    
+    enable_deleting_reports()
+    function enable_deleting_reports()
+    {
+        col = document.getElementsByClassName("remove_report")
+        for(let  i = 0 ; i< col.length ; i++)
+        {
+            col[i].addEventListener("click" , function(event){
+                report_id = event.target.id 
+                $.ajax(
+                {
+                    url: "{% url 'reports' %}",
+                    type: 'GET',
 
-    </script>
+                    headers: { "ajax": true, "ajaxFunction": "delete" , "reportid":report_id},
+                    success: function (data) {
+                        wrapper = json_to_html(data)
+                        document.getElementById("table_body").innerHTML = wrapper
+                        if(wrapper == "" ) document.getElementById("table_body").innerHTML = "no results found"
+                            enable_deleting_reports()
+                    }
+                })
+            })
+        }
+    }
+    $("#openfilter").change(function (event) {
+        if (event.target.checked) {
+            var method = "open"
+            $.ajax(
+            {
+                url: "{% url 'reports' %}",
+                type: 'GET',
+
+                headers: {"method":method, "ajax": true, "ajaxFunction": "showOpen"},
+                success: function (data) {
+                    let wrapper = json_to_html(data)
+                    document.getElementById("table_body").innerHTML = wrapper
+                    if (wrapper === "") {
+                        document.getElementById("table_body").innerHTML = "no result found"
+                    }
+                }
+            })
+        }else{
+           var method = "all"
+           $.ajax(
+           {
+            url: "{% url 'reports' %}",
+            type: 'GET',
+
+            headers: {"method":method, "ajax": true, "ajaxFunction": "showOpen"},
+            success: function (data) {
+                let wrapper = json_to_html(data)
+                document.getElementById("table_body").innerHTML = wrapper
+                if (wrapper === "") {
+                    document.getElementById("table_body").innerHTML = "no result found"
+                }
+            }
+        })
+       }
+   })
+
+    function json_to_html(json_data) {
+        try {
+            
+            json_data = JSON.parse(json_data)
+        } catch {
+
+            return ""
+        }
+        var list = []
+
+        for (let i = 0; i < json_data.length; i++) {
+            list[i] = JSON.parse(json_data[i])
+
+        }
+        let wrapper = ``;
+        counter = 1
+        list.forEach((x) => {
+            wrapper += `
+            <tr class="project_row data_row mb-3">
+            <td class="project_cell project_data"><a href="{% url 'reports' %}/${x.id}" class="black_color">${x.title}</a></td>
+            <td class="project_cell project_data">${ x.severity }</td>
+            <td class="project_cell project_data"> ${ x.reported_by.username }</td>
+            <td class="project_cell project_data">${ x.belongs_to.name }</td>
+            <td class="project_cell project_data">${ x.state }</td>
+            <td class="project_cell project_data">${ x.date_added }</td>
+            <td><i id="${x.id}" class="fa-regular fa-trash-can remove_report"></i></td>
+            </tr>
+            `
+            counter++
+        })
+
+        return wrapper
+    }
+
+
+</script>
 {% endblock %}

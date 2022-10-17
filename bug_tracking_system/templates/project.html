@@ -26,7 +26,7 @@
 
 				<div >
 					<h1 class="display-1" id="project_title">{{ project.name }}</h1>
-					<h4 >Reports : {{ project.bugs_count }}</h4>
+					<h4 id="reports_count">Reports : {{ project.bugs_count }}</h4>
 				</div>
 
 				<div id="header_right_section">
@@ -50,36 +50,36 @@
 
 										<div class="input_group d-flex flex-column justify-content-start">
 
-										<label class="input_label">Impact</label>
-										<select  class="form-select" aria-label="Default select example" id="new_report_impact">
+											<label class="input_label">Impact</label>
+											<select  class="form-select" aria-label="Default select example" id="new_report_impact">
 
-											<option value="Severe">Severe</option>
-											<option value="Normal">Normal</option>
-											<option value="Mild">Mild</option>
-										</select>
-									</div>
+												<option value="Severe">Severe</option>
+												<option value="Normal">Normal</option>
+												<option value="Mild">Mild</option>
+											</select>
+										</div>
 										<div class="mb-3">
 
 											<textarea class="form-control" placeholder="Description" id="new_report_description" rows="3"></textarea>
 
 											<div class="input_group d-flex flex-column justify-content-start">
 												<label class="input_label">upload attachment </label>
-											<input id="new_report_attachment" type="file">
-										</div>
+												<input id="new_report_attachment" type="file">
+											</div>
 
 
-										<div class="input_group d-flex flex-column justify-content-start">
+											<div class="input_group d-flex flex-column justify-content-start">
 												<label class="input_label">Assign to fix </label>
 												<small class="input_label">hold ctrl to select multiple users </small>
-											<select name="usernames" id="new_report_assigned_to" multiple>
-												
-												{% for username in users %}
-												<option value={{username}}>{{username}}</option>
-												{% endfor %}
+												<select name="usernames" id="new_report_assigned_to" multiple>
+													
+													{% for username in users %}
+													<option value={{username}}>{{username}}</option>
+													{% endfor %}
 
-											</select>
-										</div>
-									
+												</select>
+											</div>
+											
 										</div>
 
 									</div>
@@ -212,54 +212,83 @@
 <script src="{% static 'JS/home-js.js' %}"></script>
 <script >
 
+	render_assigned_report()
+	function render_assigned_report()
+	{
+		
+		let list = [
+		{% for report in assigned %}
+		{
+			"title":"{{report.title}}",
+			"id":{{report.id}},
+			"project":{{report.belongs_to.id}}
+		},
+		{% endfor %}
+		]
+		
+		wrapper = `<h6 style="color:white;" id="assigned_reports_header">assigned reports</h3>
 
-enable_closing_reports()
+		`
+		for(let i = 0 ; i< list.length ; i++)
+		{
+			wrapper+=`<a class="hover_color" href="{% url 'home' %}/${list[i].project}">${list[i].title}</P>`
+		}
+
+		if(list.length == 0)
+		{
+			document.getElementById("user_figs").innerHTML =`<h6 style="color:white;" id="assigned_reports_header">no reports assigned</h3>`
+		}else 
+		{
+			document.getElementById("user_figs").innerHTML =wrapper
+		}
+	}
+	enable_closing_reports()
 	function enable_closing_reports()
 	{
 		close_report_col = document.getElementsByClassName("close_report")
-	for(let i = 0 ; i< close_report_col.length ;i++)
-	{
+		for(let i = 0 ; i< close_report_col.length ;i++)
+		{
 
 
-		close_report_col[i].addEventListener("click",function(event){
+			close_report_col[i].addEventListener("click",function(event){
 				$.ajax({
-			
-		
-			url:"{% url 'project' project.id %}",
-			type:'GET',
-			headers:{'ajax':true,"data":"closeauthorization", "reportid":event.target.id},
-			success:function(data)
-			{
-				if(data == "false")
-				{
-					document.getElementById("restrict_closing").click()
-				}else 
-				{	
-					wrapper = reports_to_html(data)
-					document.getElementById("table_body").innerHTML = wrapper
-					col = document.getElementsByClassName("details")
-	for(let i = 0; i < col.length ; i++)
-	{
-		col[i].addEventListener("click",function (event){
-			id_fetch = event.target.id
-			test = get_reports_info(id_fetch)
-			
-			
-			
+					
+					
+					url:"{% url 'project' project.id %}",
+					type:'GET',
+					headers:{'ajax':true,"data":"closeauthorization", "reportid":event.target.id},
+					success:function(data)
+					{
+						if(data == "false")
+						{
+							document.getElementById("restrict_closing").click()
+						}else 
+						{	
+							wrapper = reports_to_html(data)
+							document.getElementById("table_body").innerHTML = wrapper
+							col = document.getElementsByClassName("details")
+							for(let i = 0; i < col.length ; i++)
+							{
+								col[i].addEventListener("click",function (event){
+									id_fetch = event.target.id
+									test = get_reports_info(id_fetch)
+									
+									
+									
 
-			
-		})
-	}
-	enable_closing_reports()
+									
+								})
+							}
+							enable_closing_reports()
 
-				}
-			}
+						}
+					}
 
 				})
+				
+			})
 			
-	})
-		
-	}
+		}
 	}
 
 	function reports_to_html(json_reports)
@@ -270,20 +299,20 @@ enable_closing_reports()
 		{
 			current_object = JSON.parse(collection[i])
 			reported_by_user = current_object.reported_by.username
-		
+			
 			wrapper += `<tr class="project_row data_row mb-3">
-						
-						<td class="project_cell project_data">${current_object.title}</td>
-						<td class="project_cell project_data">${current_object.severity}</td>
-						<td class="project_cell project_data">${reported_by_user}</td>
-						<td class="project_cell project_data"><p>
-							<a class="details black_color hover_color" id= "${current_object.id}" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="${current_object.id}">Details</a>
+			
+			<td class="project_cell project_data">${current_object.title}</td>
+			<td class="project_cell project_data">${current_object.severity}</td>
+			<td class="project_cell project_data">${reported_by_user}</td>
+			<td class="project_cell project_data"><p>
+			<a class="details black_color hover_color" id= "${current_object.id}" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="${current_object.id}">Details</a>
 
-						</p></td>
-						<td class="project_cell project_data">
-							<a class="black_color hover_color close_report" id= "${current_object.id}"  role="button">Close report</a>
-						</td>
-					</tr>`
+			</p></td>
+			<td class="project_cell project_data">
+			<a class="black_color hover_color close_report" id= "${current_object.id}"  role="button">Close report</a>
+			</td>
+			</tr>`
 		}
 		return wrapper
 	}
@@ -293,387 +322,389 @@ enable_closing_reports()
 		if(report.title != "" )
 		{
 			if (report.descirption == "")report.descirption = "none"
-			if(report.attachment == "")report.attachment = "none"
-			if(report.assignedto.length == 0)report.assignedto = "not_assigned"
+				if(report.attachment == "")report.attachment = "none"
+					if(report.assignedto.length == 0)report.assignedto = "not_assigned"
 
-				return true;
-		}
-	return false;
-	}
-	document.getElementById("report_an_issue").addEventListener("click",function()
-	{
-		if(document.getElementById("new_report_attachment").value !== ""){
-			var file_data = new FormData()
-		file_data.append('file' , document.getElementById("new_report_attachment").files[0])
-		file_data.append("csrfmiddlewaretoken", "{{ csrf_token }}")
-		}else 
-		{
-		
-			var file_data = "none"
-		}
-		
-		
-		
-
-		
-		let report = {
-			"title":document.getElementById("new_report_title").value,
-			"impact":document.getElementById("new_report_impact").value,
-			"description":document.getElementById("new_report_description").value,
-			"attachment":document.getElementById("new_report_attachment").value,
-			"assignedto":$('#new_report_assigned_to').val()
-		}
-
-	
-		
-		is_valid = is_valid_report(report)
-		if(is_valid)
-		{
-				project_id = {{ project.id }}
-				send_new_report(report , project_id, file_data)
-				$("#new_p_input")[0].reset()
-
-		}
-	})
-
-	function send_new_report(report , p_id , file_data){
-		report.assignedto = JSON.stringify(report.assignedto)
-		report_json = JSON.stringify(report)
-		
-
-		$.ajax({
-			
-		
-			url:"{% url 'project' project.id %}",
-			type:'GET',
-			headers:{'ajax':true,"data":"newreport","projectid":p_id  , "newreport":report_json},
-			success:function(data)
-			{
-				wrapper = reports_to_html(data)
-				document.getElementById("table_body").innerHTML = wrapper 
-				col = document.getElementsByClassName("details")
-				for(let i = 0; i < col.length ; i++)
-	{
-		col[i].addEventListener("click",function (event){
-			id_fetch = event.target.id
-			test = get_reports_info(id_fetch)
-			
-			
-			
-
-			
-		})
-	}
-
-	enable_closing_reports()
+						return true;
+				}
+				return false;
 			}
-		})
-	
-		if(file_data !== "none")
-		{
-		$.ajax({
-			
-		
-			url:"{% url 'project' project.id %}",
-			type:'POST',
-			headers:{'ajax':true,"type":"uploadingfile" , "valid_file":(file_data == "none")?"none" : "valid"  },
-			processData:false,
-			contentType:false,
-			data:file_data,
-			mimeType:"multipart/form-data",
-			success:function(data)
+			document.getElementById("report_an_issue").addEventListener("click",function()
 			{
-				
-			}
-
-		})
-
-		}
-	}
-
-	function delete_comment_x(comment_id , report_id )
-	{
-		$.ajax(
-		{
-			url:"{% url 'project' project.id %}",
-			type:'GET',
-			headers:{'ajax':true,"data":"deletecomment","commentid":comment_id , "reportid":report_id},
-			success:function(data)
-			{
-				if(data == "")
-				{
-					document.getElementById("restrict_deletion").click()
+				if(document.getElementById("new_report_attachment").value !== ""){
+					var file_data = new FormData()
+					file_data.append('file' , document.getElementById("new_report_attachment").files[0])
+					file_data.append("csrfmiddlewaretoken", "{{ csrf_token }}")
 				}else 
 				{
-					comment_section = JSON.parse(data)
-					comment_wrapper = comments_to_html(comment_section)
-					if(comment_section.length == 0)
+					
+					var file_data = "none"
+				}
+				
+				
+				
+
+				
+				let report = {
+					"title":document.getElementById("new_report_title").value,
+					"impact":document.getElementById("new_report_impact").value,
+					"description":document.getElementById("new_report_description").value,
+					"attachment":document.getElementById("new_report_attachment").value,
+					"assignedto":$('#new_report_assigned_to').val()
+				}
+
+				
+				
+				is_valid = is_valid_report(report)
+				if(is_valid)
+				{
+					project_id = {{ project.id }}
+					send_new_report(report , project_id, file_data)
+					$("#new_p_input")[0].reset()
+
+				}
+			})
+
+			function send_new_report(report , p_id , file_data){
+				report.assignedto = JSON.stringify(report.assignedto)
+				report_json = JSON.stringify(report)
+				
+
+				$.ajax({
+					
+					
+					url:"{% url 'project' project.id %}",
+					type:'GET',
+					headers:{'ajax':true,"data":"newreport","projectid":p_id  , "newreport":report_json},
+					success:function(data)
 					{
-						document.getElementById("discussion").innerHTML = "Be the first to comment"
+						wrapper = reports_to_html(data)
+						document.getElementById("table_body").innerHTML = wrapper 
+						col = document.getElementsByClassName("details")
+						for(let i = 0; i < col.length ; i++)
+						{
+							col[i].addEventListener("click",function (event){
+								id_fetch = event.target.id
+								test = get_reports_info(id_fetch)
+								
+								
+								
+
+								
+							})
+						}
+
+						enable_closing_reports()
+						
+					}
+				})
+				console.log(file_data == "none")
+				if(file_data !== "none")
+				{
+					console.log("file data is not none")
+					$.ajax({
+						
+						
+						url:"{% url 'project' project.id %}",
+						type:'POST',
+						headers:{'ajax':true,"type":"uploadingfile" , "validfile":"valid"  },
+						processData:false,
+						contentType:false,
+						data:file_data,
+						mimeType:"multipart/form-data",
+						success:function(data)
+						{
+							
+						}
+
+					})
+
+				}
+			}
+
+			function delete_comment_x(comment_id , report_id )
+			{
+				$.ajax(
+				{
+					url:"{% url 'project' project.id %}",
+					type:'GET',
+					headers:{'ajax':true,"data":"deletecomment","commentid":comment_id , "reportid":report_id},
+					success:function(data)
+					{
+						if(data == "")
+						{
+							document.getElementById("restrict_deletion").click()
+						}else 
+						{
+							comment_section = JSON.parse(data)
+							comment_wrapper = comments_to_html(comment_section)
+							if(comment_section.length == 0)
+							{
+								document.getElementById("discussion").innerHTML = "Be the first to comment"
 
 
-					}else 
+							}else 
+							{
+								document.getElementById("discussion").innerHTML = comment_wrapper
+								enable_deleting_comments()
+
+							}
+
+						}
+					}
+				})
+			}
+
+			function enable_deleting_comments()
+			{
+
+				col = document.getElementsByClassName("del_comment")
+
+				for(var i = 0 ; i < col.length ; i++)
+				{
+
+					col[i].addEventListener("click",function(event)
 					{
-						document.getElementById("discussion").innerHTML = comment_wrapper
+						comment_id = event.target.id
+						id = document.getElementsByClassName("detailed_report_id")[0]
+						id = id.id
+						delete_comment_x(comment_id, id)
+
+					})
+				}
+			}
+
+			
+			function get_reports_info(report_id)
+			{
+				
+				
+				$.ajax({
+					url:"{% url 'project' project.id %}",
+					type:'GET',
+					headers:{'ajax':true,"data":"reports","reportid":report_id},
+					success:function(data){
+						
+						all_data = JSON.parse(data)
+						comment_section = JSON.parse(all_data["comments"])
+
+						comment_wrapper = comments_to_html(comment_section)
+						if(comment_section.length == 0)
+							document.getElementById("discussion").innerHTML = "Be the first to comment"
+						else
+							{document.getElementById("discussion").innerHTML = comment_wrapper
 						enable_deleting_comments()
-
 					}
 
+					let parsed_object = JSON.parse(all_data["report"])
+
+					assigned_to_html = `<ul>`
+					for(let i = 0 ; i<parsed_object.assigned_to.length ; i++)
+					{
+						assigned_to_html+=`<li class="black_color size_plus">${parsed_object.assigned_to[i].username}</li>`
+					}
+					assigned_to_html+=`</ul>`
+					let attachment_type , attachment_url
+					if(parsed_object.attachment === "")
+					{
+						attachment_type = "There is no attachment"
+					}else
+					{
+						attachment_type = parsed_object.attachment.match("/.(.*)/")
+
+					}
+					let wrapper =`<div id="details_container">`
+
+					let condition = (parsed_object.severity === 'Severe') ? true : false;
+					wrapper +=`
+
+					<div class="report_unit"><label>title</label>
+					<p class="detailed_report_id black_color size_plus" id="${parsed_object.id}">${parsed_object.title}</p>
+					</div>
+					
+					<div class="report_unit"><label>Project</label>
+					<p class="black_color size_plus">${parsed_object.belongs_to.name}</p>
+					</div>
+
+					<div id="scroll_to" class="report_unit"><label>severity</label>
+					<p class="black_color ${condition ? 'danger' : 'noraml'} size_plus">${parsed_object.severity}</p>
+					</div>
+
+					<div class="report_unit report_description_container">
+					<label>description</label>
+
+					<p class="report_description black_color size_plus">${parsed_object.description}</p>
+					</div>
+
+					<div class="report_unit">
+					<label>${attachment_type}</label>
+					<a class="black_color size_plus" id="download_attachment" href="#download_atatchment" >Download attachment</a>
+					</div>
+
+					<div class="report_unit">
+					<label>state</label>
+					<p class="black_color size_plus">${parsed_object.state}</p>
+					</div>
+
+					<div class="report_unit">
+					<label>date added</label>
+					<p class="black_color size_plus">${parsed_object.date_added}</p>
+					</div>
+
+					<div class="report_unit">
+					<label>reported by</label>
+					<p class="black_color size_plus">${parsed_object.reported_by.username}</p>
+					</div>
+
+					<div class="report_unit">
+					<label>assigned to</label>
+					${assigned_to_html}
+					</div>
+					`
+
+					wrapper+= `</div>`
+					$("#report_info").html(wrapper)
+					if(! (attachment_type === "There is no attachment"))
+					{
+
+						link = `download/${parsed_object.id}`
+						document.getElementById("download_attachment").href = link
+					}
 				}
+			})
+				
+				
 			}
-		})
-	}
 
-	function enable_deleting_comments()
-	{
-
-		col = document.getElementsByClassName("del_comment")
-
-		for(var i = 0 ; i < col.length ; i++)
-		{
-
-			col[i].addEventListener("click",function(event)
+			
+			function comments_to_html(comment_section)
 			{
-				comment_id = event.target.id
+				comment_wrapper = `<table class="mt-3 w-100">
+				<h1 class="table_header">Comments</h1>
+				<thead>
+				</thead>
+				<tbody id="table_body" >`
+				comment_section.forEach((x)=>
+				{
+					temp = JSON.parse(x)
+					comment_wrapper +=`
+					<tr class="project_row data_row mb-3">
+					<td class="d-flex flex-column w-100">
+					<div class="d-flex w-100 flex-row justify-content-between" id="outer_comment_header">
+					<div class="comment_header d-flex flex-row">
+					<div class="fw-bold font_plus">${temp.commented_by} -</div>
+					<div class="text-secondary">${temp.date}
+					</div>
+					</div>
+					<div><i id="${temp.id}" class="fa-solid fa-xmark del_comment"></i></div>
+					</div>
+					<div class="font_plus">${temp.content}</div>
+					</td>
+					</tr>
+					`
+				})
+
+				comment_wrapper +=`</tbody></table>`
+
+				return comment_wrapper
+
+			}
+
+			col = document.getElementsByClassName("details")
+			for(let i = 0; i < col.length ; i++)
+			{
+				col[i].addEventListener("click",function (event){
+					id_fetch = event.target.id
+					test = get_reports_info(id_fetch)
+					
+					
+
+					
+				})
+			}
+
+
+
+
+
+			function send_new_comment(comment )
+			{
+				$.ajax({
+					url:"{% url 'project' project.id %}",
+					type:'GET',
+					headers:{'ajax':true,"data":"comments","reportid":comment.report,"content":comment.content , "function":"comment"},
+					success:function(data){
+						comments = JSON.parse(data)
+						comment_wrapper = comments_to_html(comments)
+						if(comment_wrapper !== '')
+						{
+							document.getElementById("discussion").innerHTML = comment_wrapper
+							enable_deleting_comments()
+						}
+
+					}
+				})
+			}
+
+			document.getElementById("add_comment").addEventListener("click" ,function ()
+			{
 				id = document.getElementsByClassName("detailed_report_id")[0]
 				id = id.id
-				delete_comment_x(comment_id, id)
-
-			})
-		}
-	}
-
-	
-	function get_reports_info(report_id)
-	{
-		
-		
-		$.ajax({
-			url:"{% url 'project' project.id %}",
-			type:'GET',
-			headers:{'ajax':true,"data":"reports","reportid":report_id},
-			success:function(data){
-				
-				all_data = JSON.parse(data)
-				comment_section = JSON.parse(all_data["comments"])
-
-				comment_wrapper = comments_to_html(comment_section)
-				if(comment_section.length == 0)
-					document.getElementById("discussion").innerHTML = "Be the first to comment"
-				else
-					{document.getElementById("discussion").innerHTML = comment_wrapper
-				enable_deleting_comments()
-			}
-
-			let parsed_object = JSON.parse(all_data["report"])
-
-			assigned_to_html = `<ul>`
-			for(let i = 0 ; i<parsed_object.assigned_to.length ; i++)
-			{
-				assigned_to_html+=`<li class="black_color size_plus">${parsed_object.assigned_to[i].username}</li>`
-			}
-			assigned_to_html+=`</ul>`
-			let attachment_type , attachment_url
-			if(parsed_object.attachment === "")
-			{
-				attachment_type = "There is no attachment"
-			}else
-			{
-				attachment_type = parsed_object.attachment.match("/.(.*)/")
-
-			}
-			let wrapper =`<div id="details_container">`
-
-			let condition = (parsed_object.severity === 'Severe') ? true : false;
-			wrapper +=`
-
-			<div class="report_unit"><label>title</label>
-			<p class="detailed_report_id black_color size_plus" id="${parsed_object.id}">${parsed_object.title}</p>
-			</div>
-			
-			<div class="report_unit"><label>Project</label>
-			<p class="black_color size_plus">${parsed_object.belongs_to.name}</p>
-			</div>
-
-			<div id="scroll_to" class="report_unit"><label>severity</label>
-			<p class="black_color ${condition ? 'danger' : 'noraml'} size_plus">${parsed_object.severity}</p>
-			</div>
-
-			<div class="report_unit report_description_container">
-			<label>description</label>
-
-			<p class="report_description black_color size_plus">${parsed_object.description}</p>
-			</div>
-
-			<div class="report_unit">
-			<label>${attachment_type}</label>
-			<a class="black_color size_plus" id="download_attachment" href="#download_atatchment" >Download attachment</a>
-			</div>
-
-			<div class="report_unit">
-			<label>state</label>
-			<p class="black_color size_plus">${parsed_object.state}</p>
-			</div>
-
-			<div class="report_unit">
-			<label>date added</label>
-			<p class="black_color size_plus">${parsed_object.date_added}</p>
-			</div>
-
-			<div class="report_unit">
-			<label>reported by</label>
-			<p class="black_color size_plus">${parsed_object.reported_by.username}</p>
-			</div>
-
-			<div class="report_unit">
-			<label>assigned to</label>
-			${assigned_to_html}
-			</div>
-			`
-
-			wrapper+= `</div>`
-			$("#report_info").html(wrapper)
-			if(! (attachment_type === "There is no attachment"))
-			{
-
-				link = `download/${parsed_object.id}`
-				document.getElementById("download_attachment").href = link
-			}
-		}
-	})
-		
-		
-	}
-
-	
-	function comments_to_html(comment_section)
-	{
-		comment_wrapper = `<table class="mt-3 w-100">
-		<h1 class="table_header">Comments</h1>
-		<thead>
-		</thead>
-		<tbody id="table_body" >`
-		comment_section.forEach((x)=>
-		{
-			temp = JSON.parse(x)
-			comment_wrapper +=`
-			<tr class="project_row data_row mb-3">
-			<td class="d-flex flex-column w-100">
-			<div class="d-flex w-100 flex-row justify-content-between" id="outer_comment_header">
-			<div class="comment_header d-flex flex-row">
-			<div class="fw-bold font_plus">${temp.commented_by} -</div>
-			<div class="text-secondary">${temp.date}
-			</div>
-			</div>
-			<div><i id="${temp.id}" class="fa-solid fa-xmark del_comment"></i></div>
-			</div>
-			<div class="font_plus">${temp.content}</div>
-			</td>
-			</tr>
-			`
-		})
-
-		comment_wrapper +=`</tbody></table>`
-
-		return comment_wrapper
-
-	}
-
-	col = document.getElementsByClassName("details")
-	for(let i = 0; i < col.length ; i++)
-	{
-		col[i].addEventListener("click",function (event){
-			id_fetch = event.target.id
-			test = get_reports_info(id_fetch)
-			
-			
-
-			
-		})
-	}
-
-
-
-
-
-	function send_new_comment(comment )
-	{
-		$.ajax({
-			url:"{% url 'project' project.id %}",
-			type:'GET',
-			headers:{'ajax':true,"data":"comments","reportid":comment.report,"content":comment.content , "function":"comment"},
-			success:function(data){
-				comments = JSON.parse(data)
-				comment_wrapper = comments_to_html(comments)
-				if(comment_wrapper !== '')
+				content = document.getElementById("comment_input").value
+				if(content === '')
 				{
-					document.getElementById("discussion").innerHTML = comment_wrapper
-					enable_deleting_comments()
+					window.alert("invalid comment")
+				}else 
+				{
+					new_comment = {
+						'content':content,
+
+						'report':id
+					}
+					document.getElementById("comment_input").value= ""
+
+					send_new_comment(new_comment)
 				}
 
+			})
+
+			function json_to_html(json_data)
+			{
+				try
+				{
+					json_data = JSON.parse(json_data)
+				}catch
+				{
+					return ""
+				}
+				list = []
+				for(let i = 0 ; i< json_data.length ; i++)
+				{
+					list[i] = JSON.parse(json_data[i])
+				}
+				wrapper = ``
+				counter = 1
+				list.forEach((x)=>
+				{
+					wrapper +=`
+					<tr>
+					<th scope="row"> ${ counter }</th>
+					<td ><a href="{% url 'home' %}/${x.id}" class="a_color">${x.name}</a></td>
+					<td >${x.bugs_count}</td>
+					<td >${x.date}</td>
+					<td><button class="remove_project" id="${x.id}" >Remove</button></td>
+					</tr> 
+					`
+					counter ++
+				})
+
+				return wrapper	
 			}
-		})
-	}
-
-	document.getElementById("add_comment").addEventListener("click" ,function ()
-	{
-		id = document.getElementsByClassName("detailed_report_id")[0]
-		id = id.id
-		content = document.getElementById("comment_input").value
-		if(content === '')
-		{
-			window.alert("invalid comment")
-		}else 
-		{
-			new_comment = {
-				'content':content,
-
-				'report':id
-			}
-			document.getElementById("comment_input").value= ""
-
-			send_new_comment(new_comment)
-		}
-
-	})
-
-	function json_to_html(json_data)
-	{
-		try
-		{
-			json_data = JSON.parse(json_data)
-		}catch
-		{
-			return ""
-		}
-		list = []
-		for(let i = 0 ; i< json_data.length ; i++)
-		{
-			list[i] = JSON.parse(json_data[i])
-		}
-		wrapper = ``
-		counter = 1
-		list.forEach((x)=>
-		{
-			wrapper +=`
-			<tr>
-			<th scope="row"> ${ counter }</th>
-			<td ><a href="{% url 'home' %}/${x.id}" class="a_color">${x.name}</a></td>
-			<td >${x.bugs_count}</td>
-			<td >${x.date}</td>
-			<td><button class="remove_project" id="${x.id}" >Remove</button></td>
-			</tr> 
-			`
-			counter ++
-		})
-
-		return wrapper	
-	}
 
 
 
 
 
-</script>
+		</script>
 
-{% endblock %}
+		{% endblock %}

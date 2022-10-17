@@ -10,7 +10,6 @@ from .views import base
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/', testtest),
     path('', redirect_home ),
     path('signin',sign_in , name="signin"),
     path('home',home , name="home"),

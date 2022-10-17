@@ -20,6 +20,7 @@ import os
 
 @login_required(login_url = "signin")
 def render_reports(request, id):
+    assigned = report.objects.all().filter(assigned_to = request.user )
     results = report.objects.all().filter(belongs_to__id=id).exclude(state="Closed")
     current_project = project.objects.all().filter(id=id)[0]
     current_project.bugs_count = results.count()
@@ -28,7 +29,7 @@ def render_reports(request, id):
     usernames = []
     for user in users:
         usernames.append(user.username)
-    context = {"project": current_project, "reports": results , "users":usernames}
+    context = {"project": current_project, "reports": results , "users":usernames , "assigned":assigned}
 
     if request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get("data") == "reports":
         id = request.headers.get("reportid")
@@ -80,9 +81,11 @@ def render_reports(request, id):
         new_object.state = "Open"
         new_object.reported_by = request.user  
        
-       
+        target_project = project.objects.all().filter(id = id)[0]
+        target_project.bugs_count = target_project.bugs_count + 1
+        context["project"]= target_project
         new_object.date_added = datetime.now()
-        new_object.belongs_to = project.objects.all().filter(id = id)[0]
+        new_object.belongs_to = target_project
         new_object.attachment = new_report.attachment 
         new_object.save()
         query = Q(username=new_report.assignedto[0])
@@ -91,14 +94,15 @@ def render_reports(request, id):
         final_res = User.objects.all().filter(query)
         new_object.assigned_to.set(final_res)
         return reports_collection_to_json(report.objects.all().filter(belongs_to__id = id).exclude( state= "Closed") )
-    if request.method == 'POST' and request.headers.get("ajax") == "true" and request.headers.get("type")=="uploadingfile" and request.headers.get("valid_file")=="valid":
+    if request.method == 'POST' and request.headers.get("ajax") == "true" and request.headers.get("type")=="uploadingfile" and request.headers.get("validfile")=="valid":
         target_report = report.objects.all().latest("id")
 
         file = request.FILES.get("file") 
+        print("got here")
         fss = FileSystemStorage()
         filename = fss.save(file.name , file)
         url = fss.url('static/uploads/'+filename)
-        handle_uploaded_file(file)
+        #handle_uploaded_file(file)
         
         target_report.attachment = file 
         target_report.save()
@@ -143,8 +147,9 @@ def get_final_json_response(list_of_objects):
 
 @login_required(login_url = "signin")
 def all_reports(request):
+    assigned = report.objects.all().filter(assigned_to = request.user )
     reports = report.objects.all()
-    context = {"reports": reports}
+    context = {"reports": reports , "assigned":assigned}
     if request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get(
             "ajaxFunction") == "showOpen" and request.headers.get("method") == "open":
         rep = reports.exclude(state="Closed")
@@ -153,8 +158,10 @@ def all_reports(request):
             "ajaxFunction") == "showOpen" and request.headers.get("method") == "all":
         return reports_collection_to_json(reports)
     if request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get(
-            "ajaxFunction") == "deleteperm" :   
-        pass     
+            "ajaxFunction") == "delete" :   
+        target_report = report.objects.all().filter(id = request.headers.get('reportid'))[0]
+        target_report.delete() 
+        return reports_collection_to_json(report.objects.all())  
     return render(request, "reports.html", context)
 
 

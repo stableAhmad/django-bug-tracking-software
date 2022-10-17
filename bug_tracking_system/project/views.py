@@ -4,15 +4,16 @@ from django.core.mail import send_mail
 from django.shortcuts import render
 from .models import project
 from datetime import datetime
-
+from report.models import report
 
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='signin')
 def home(request):
+    assigned = report.objects.all().filter(assigned_to = request.user )
+    
     projects = project.objects.all();
-
     if request.method == 'GET' and request.headers.get("ajax") == "true" and request.headers.get(
             "ajaxFunction") == "sort":
 
@@ -47,8 +48,7 @@ def home(request):
         id = request.headers.get("data")
         project.objects.all().filter(id=id).delete()
         return final_json_response(project.objects.all())
-
-    context = {"projects": projects}
+    context = {"projects": projects , "assigned":assigned}
 
     return render(request, "home.html", context)
 

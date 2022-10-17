@@ -61,6 +61,7 @@ button
 .project_cell
 {
 	width: 33.3%;
+	padding: 5px;
 }
 
 table

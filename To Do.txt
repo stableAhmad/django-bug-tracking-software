@@ -5,20 +5,3 @@ fix languages ratio inside github repo
 
 
 
-reformat all the files
-
-replace cdn caches with static files
-
-
-
-delete perm in reports.html
-
-reports assigned to you
-
-attachment url
-
-
-
-
-
-minify /compress files

@@ -85,7 +85,7 @@ def signed_up(request):
         if(data.is_valid()):
             data.save()
            
-            return redirect('/')
+            return redirect('signin')
         else :
             #"<[^>]*>"
             errs = data.errors
