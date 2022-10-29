@@ -1,4 +1,3 @@
-# How to run
 
 ```
 git clone https://github.com/stableAhmad/django-bug-tracking-system.git 
