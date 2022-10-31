@@ -505,7 +505,7 @@
 					}
 					assigned_to_html+=`</ul>`
 					let attachment_type , attachment_url
-					if(parsed_object.attachment === "")
+					if(parsed_object.attachment === "" )
 					{
 						attachment_type = "There is no attachment"
 					}else
@@ -564,12 +564,14 @@
 
 					wrapper+= `</div>`
 					$("#report_info").html(wrapper)
-					if(! (attachment_type === "There is no attachment"))
+					if(! ((attachment_type === "There is no attachment" ) || (attachment_type === null ))  )
 					{
 
 						link = `download/${parsed_object.id}`
 						document.getElementById("download_attachment").href = link
 					}
+
+					
 				}
 			})
 				

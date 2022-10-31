@@ -1,6 +1,6 @@
 TO DO
    -attachment is not deleted after deleting the report
-
+   -uploading files properly
 
 
 
