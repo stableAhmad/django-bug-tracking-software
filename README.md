@@ -5,7 +5,7 @@ cd django-bug-tracking-system
 cd bug_tracking_system
 python manage.py runserver
 ```
-### open djanog default address 
+### open the localhost with the right port
 
    
 
