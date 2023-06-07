@@ -11,6 +11,6 @@
 
 ### sign up
 
-![Sign up gif](demo/sign gif.gif)
+![Sign up gif](demo/signGif.gif)
 
 
