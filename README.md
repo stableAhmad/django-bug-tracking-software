@@ -11,6 +11,8 @@
 
 ### sign up
 
-![Sign up gif](demo/vid.mp4)
+<p align="center">
+<img src="./demo/signGif.gif" width="60%" />
+</p>
 
 
