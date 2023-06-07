@@ -11,6 +11,6 @@
 
 ### sign up
 
-<img src="path/to/image.jpg" width="100%" />
+<img src="./demo/signGif.gif" width="100%" />
 
 
