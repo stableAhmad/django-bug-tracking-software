@@ -11,6 +11,6 @@
 
 ### sign up
 
-<img src="./demo/signGif.gif" width="80%" />
+<img src="./demo/signGif.gif" width="70%" />
 
 
