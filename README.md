@@ -12,7 +12,7 @@
 ### sign up
 
 <p align="center">
-<img src="./demo/signGif.gif" width="100%" />
+<img src="./demo/signGif.gif" width="150%" />
 </p>
 
 
