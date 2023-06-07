@@ -52,7 +52,7 @@
 ### Closing reports
 
 <p align="center">
-<img src="./demo/closingReports.png" width="60%" />
+<img src="./demo/closingReport.png" width="60%" />
 </p>
 
 
