@@ -22,6 +22,13 @@
 <img src="./demo/addProject.gif" width="100%" />
 </p>
 
+
+### Report an issue
+
+<p align="center">
+<img src="./demo/reportGif.gif" width="100%" />
+</p>
+
 ### Search projects
 
 <p align="center">
