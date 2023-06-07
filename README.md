@@ -6,7 +6,7 @@
 - open the localhost with the right port
 
 
-## Demo ( for  <a href="https://github.com/stableAhmad/django-bug-tracking-software/blob/master/README.md">LBetter quality</a> )
+## Demo ( for  <a href="https://github.com/stableAhmad/django-bug-tracking-software/blob/master/README.md">Better quality</a> )
 
 
 ### sign up
