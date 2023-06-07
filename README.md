@@ -11,6 +11,6 @@
 
 ### sign up
 
-![]([demo/vid.mp4)](https://github.com/stableAhmad/django-bug-tracking-software/blob/master/demo/signGif.gif)
+![](https://github.com/stableAhmad/django-bug-tracking-software/blob/master/demo/signGif.gif)
 
 
