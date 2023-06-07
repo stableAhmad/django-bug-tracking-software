@@ -11,6 +11,8 @@
 
 ### sign up
 
+<p align="center">
 <img src="./demo/signGif.gif" width="60%" />
+</p>
 
 
