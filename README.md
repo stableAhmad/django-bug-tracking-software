@@ -16,3 +16,17 @@
 </p>
 
 
+### Add a project
+
+<p align="center">
+<img src="./demo/addProject.gif" width="60%" />
+</p>
+
+### Search projects
+
+<p align="center">
+<img src="./demo/searchGif.gif" width="60%" />
+</p>
+
+
+
