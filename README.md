@@ -11,6 +11,6 @@
 
 ### sign up
 
-![](https://github.com/stableAhmad/django-bug-tracking-software/blob/master/demo/signGif.gif)
+<img src="path/to/image.jpg" width="100%" />
 
 
